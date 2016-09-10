@@ -35,10 +35,6 @@ var noteStrings = [
   "B"
 ];
 
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
-var audioContext = null;
-
 const notes = {
   noteNumberFromPitch: function noteFromPitch(frequency) {
     var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
@@ -140,7 +136,7 @@ const autoCorrelate = function autoCorrelate(audioBuffer, sampleRate) {
 };
 
 class PitchDetect {
-  constructor(stream) {
+  constructor(stream, recordDuration, timeFactor, pitchFactor, boxSize, msDelay, handler) {
     if (stream.ended) {
       return console.warn('Can not use PitchDetect on an ended stream');
     }
@@ -148,8 +144,50 @@ class PitchDetect {
     this.stream = stream;
     this.audioContext = new AudioContext();
     this.audioBuffer = new Float32Array(BUFFER_LENGTH);
-
+    this.msDelay = msDelay;
+    this.handler = handler;
+    this.boxSize = boxSize;
+    this.pitchArr = [];
+    this.currentTime = 0;
+    this.pitchFactor = pitchFactor;
+    this.isRunning = true;
+    this.timeFactor = timeFactor;
+    this.recordDuration = recordDuration;
     this.enumerateStream();
+  }
+
+  start(){
+    console.log("derpaherp?");
+    this.currentTime = 0;
+    this.pitchArr = [];
+    this.pitchArr.push(this.convertPitchObjToNum(this.getPitch()));
+    this.isRunning = true;
+    const self = this;
+    var interval = setInterval(function() {
+        if(self.isRunning){
+            console.log("PITCH FACTAAAAA:", self.pitchFactor, Math.log(self.pitchArr[self.pitchArr.length - 1]));
+            self.pitchArr.push(self.convertPitchObjToNum(self.getPitch()));
+            self.handler(
+                self.currentTime * self.timeFactor, 
+                self.boxSize - Math.log(self.pitchArr[self.pitchArr.length - 2] * self.pitchFactor), 
+                (self.currentTime + self.msDelay) * self.timeFactor,
+                self.boxSize - Math.log(self.pitchArr[self.pitchArr.length - 1] * self.pitchFactor)
+            );
+            self.currentTime = self.currentTime + self.msDelay;
+        }
+        if(self.currentTime > self.recordDuration){
+            clearInterval(interval);
+        }
+    }, this.msDelay);
+  }
+
+
+  convertPitchObjToNum(pitch){
+      if(pitch.type === 'vague'){
+          return 0;
+      } else {
+          return pitch.pitch;
+      }
   }
 
   enumerateStream() {
@@ -186,7 +224,7 @@ class PitchDetect {
     }
   }
 }
-
+/*
 function error() {
     alert('Stream generation failed.');
 }
@@ -210,16 +248,6 @@ function gotStream(stream) {
     printPitch(pd);
 }
 
-function printPitch(pd){
-    console.log(JSON.stringify(pd.getPitch()));
-    wait(pd);
-}
-
-function wait(pd){
-    setTimeout(function () {
-        printPitch(pd);
-    }, 250);
-}
 
 $(document).ready(function() {
     audioContext = new AudioContext();
@@ -237,3 +265,4 @@ $(document).ready(function() {
     }, gotStream);
 });
 
+*/
