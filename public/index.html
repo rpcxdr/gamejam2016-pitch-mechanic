@@ -1,10 +1,16 @@
 <html>
 <head>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="timbre.js"></script>
+  <script src="index.js"></script>
   <title>
     Pitch perfect
   </title>
 <head>
 <body>
   Hello Derp!
+  <input type="range" id="pitch" min="350" max="900" oninput="setPitch()" style="width:600">
+  <input type="button" id="play" onclick="play()" value="Play!">
+  <input type="button" id="record" onclick="recordPitches()" value="Record!">
 </body>
 </html>
