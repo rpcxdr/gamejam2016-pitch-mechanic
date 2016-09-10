@@ -87,7 +87,7 @@ const autoCorrelate = function autoCorrelate(audioBuffer, sampleRate) {
   let correlation;
 
   // not enough signal
-  if (rms < 0.01) {
+  if (rms < 0.05) {
     return -1;
   }
 
@@ -165,13 +165,15 @@ class PitchDetect {
     const self = this;
     var interval = setInterval(function() {
         if(self.isRunning){
-            console.log("PITCH FACTAAAAA:", self.pitchFactor, Math.log(self.pitchArr[self.pitchArr.length - 1]));
+            console.log("PITCH FACTAAAAA:", self.pitchFactor, Math.log10(self.pitchArr[self.pitchArr.length - 1]), self.pitchArr[self.pitchArr.length - 1]);
             self.pitchArr.push(self.convertPitchObjToNum(self.getPitch()));
             self.handler(
-                self.currentTime * self.timeFactor, 
-                self.boxSize - Math.log(self.pitchArr[self.pitchArr.length - 2] * self.pitchFactor), 
+                self.currentTime * self.timeFactor,
+                //self.boxSize * 1.5 - Math.log10(self.pitchArr[self.pitchArr.length - 2]) * self.pitchFactor * 1.3,
+                self.boxSize - self.pitchArr[self.pitchArr.length - 2] *  self.pitchFactor,
                 (self.currentTime + self.msDelay) * self.timeFactor,
-                self.boxSize - Math.log(self.pitchArr[self.pitchArr.length - 1] * self.pitchFactor)
+                //self.boxSize * 1.5  - Math.log10(self.pitchArr[self.pitchArr.length - 1]) * self.pitchFactor * 1.3
+                self.boxSize - self.pitchArr[self.pitchArr.length - 1] *  self.pitchFactor
             );
             self.currentTime = self.currentTime + self.msDelay;
         }
@@ -202,8 +204,9 @@ class PitchDetect {
 
     this.analyser.getFloatTimeDomainData(this.audioBuffer);
     pitch = autoCorrelate(this.audioBuffer, this.audioContext.sampleRate);
+    
 
-    if (pitch == -1) {
+    if (pitch == -1 || pitch < 200 || pitch > 2000) {
       return {
         type: 'vague'
       };
