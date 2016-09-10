@@ -3,9 +3,10 @@ const REFRESH_RATE_MS = 60;
 const RECORDING_DURATION = 3000; //3 seconds
 const BOX_SIDE_SIZE = 500;
 const MAX_PITCH = 1000;
-const MIN_PITCH = 300;
+const MIN_PITCH = 0;
 const PITCH_FACTOR = BOX_SIDE_SIZE / MAX_PITCH;
 const TIME_FACTOR = BOX_SIDE_SIZE / RECORDING_DURATION;
+const TWEAK_FACTOR = 0.5;
 
 $(document).ready(function() {
 
@@ -53,7 +54,7 @@ function error() {
 
 var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastPitch, lastTime, pitch, time);
-    if(lastPitch !== 0 && pitch !== 0){
+    if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
         var line = new PIXI.Graphics();
         line.lineStyle(4, 0xFFFFFF, 1);
         line.moveTo(lastTime, lastPitch);
@@ -78,6 +79,6 @@ function getUserMedia(dictionary, callback) {
 
 function gotStream(stream) {
     //var pd = new PitchDetect(stream, RECORDING_DURATION, BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
-    var pd = new PitchDetect(stream, RECORDING_DURATION, TIME_FACTOR, BOX_SIDE_SIZE/(MAX_PITCH-MIN_PITCH), BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
+    var pd = new PitchDetect(stream, RECORDING_DURATION, TIME_FACTOR,/*BOX_SIDE_SIZE/Math.log10(MAX_PITCH-MIN_PITCH)*/BOX_SIDE_SIZE/(MAX_PITCH-MIN_PITCH), BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
     pd.start();
 }
