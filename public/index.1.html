@@ -1,0 +1,17 @@
+<html>
+<head>
+        <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="timbre.js"></script>
+        <script src="index.js"></script>
+    <title>
+        Pitch perfect
+    </title>
+<head>
+<body>
+Human Send Pitches!
+        <input type="range" id="pitch" min="350" max="900" oninput="setPitch()" style="width:600">
+        <input type="button" id="record" onclick="recordPitches()" value="Record!">
+        <input type="button" id="send" onclick="sendDrawing()" value="Send Drawing!">
+</body>
+</html>
