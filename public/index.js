@@ -49,7 +49,7 @@ function play() {
     }
     console.log("isPlaying "+isPlaying);
 }
-function record() {
+function recordPitches() {
     isRecording = !isRecording;
     console.log("isRecording "+isRecording);
 }
@@ -84,3 +84,20 @@ function play2() {
    });
 
 }
+
+const client = deepstream('104.236.166.136:6020').login();
+const record = client.record.getRecord('room/1');
+
+function sendDrawing() {
+  console.log("sendDrawing: "+pitchFrames);
+    record.set('humanPitches', pitchFrames);
+}
+
+record.whenReady(function() {
+  //pitchFrames = record.get('humanPitches');
+  //console.log("whenReady:"+pitchFrames);
+})
+record.subscribe("humanPitches", function (foo) {
+  pitchFrames = record.get('humanPitches');
+  console.log("subscribe got: "+pitchFrames);
+});
