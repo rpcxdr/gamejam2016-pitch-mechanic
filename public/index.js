@@ -53,37 +53,6 @@ function recordPitches() {
     isRecording = !isRecording;
     console.log("isRecording "+isRecording);
 }
-function play2() {
-    sin.pause();
-    timbre.rec(function(output) {
-        var midis = [69, 71, 72, 76, 69, 71, 72, 76];
-        var msec  = timbre.timevalue("bpm120 l8");
-        var synth = T("OscGen", {env:T("perc", {r:msec, ar:true})});
-
-        T("interval", {interval:msec}, function(count) {
-            if (count < midis.length) {
-            synth.noteOn(midis[count], 100);
-            } else {
-            output.done();
-            }
-        }).start();
-
-        output.send(synth);
-     }).then(function(result) {
-        var L = T("buffer", {buffer:result, loop:true});
-        var R = T("buffer", {buffer:result, loop:true});
-
-        var num = 400;
-        var duration = L.duration;
-
-        R.pitch = (duration * (num - 1)) / (duration * num);
-
-        T("delay", {time:"bpm120 l16", fb:0.1, cross:true},
-            T("pan", {pos:-0.6}, L), T("pan", {pos:+0.6}, R)
-        ).play();
-   });
-
-}
 
 const client = deepstream('104.236.166.136:6020').login();
 const record = client.record.getRecord('room/1');
@@ -94,10 +63,115 @@ function sendDrawing() {
 }
 
 record.whenReady(function() {
-  //pitchFrames = record.get('humanPitches');
-  //console.log("whenReady:"+pitchFrames);
-})
+  var f = record.get('humanPitches');
+  if (f) {
+      pitchFrames = f;
+      console.log("whenReady:"+pitchFrames);
+  }
+});
+
 record.subscribe("humanPitches", function (foo) {
   pitchFrames = record.get('humanPitches');
   console.log("subscribe got: "+pitchFrames);
 });
+
+loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
+    console.log("loadCanvas.onload sfssss got: ",drawnPixels);
+    loadPixels("test-goal-drawing.png", "drawn",function (goalPixels) {
+        console.log("loadCanvas.onload sfssss2 got: ",goalPixels);
+        var h = 200;
+        var w = 200;
+        var p2d = new Array(w);
+        var scoreMax = 0;
+        var scoreTotal = 0;
+        for (var x=0; x<w; x++) {
+            p2d[x] = new Array(h);
+            for (var y=0; y<h; y++) {
+                var drawn = drawnPixels[x][y][0];
+                var goal = goalPixels[x][y][0];
+                if (drawn) {
+                    scoreMax++;
+                    if (goal) {
+                        scoreTotal++;
+                    }
+               }
+               var r=(drawn && !goal)?255:0;
+               var g=(drawn && goal)?255:0;;
+               var b=0;
+               var a=255;
+               var visualScoreContext = visualScoreCanvas.getContext('2d');
+               visualScoreContext.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+               visualScoreContext.fillRect( x, y, 1, 1 );
+
+            }
+        }
+        console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
+    });
+});
+
+var visualScoreCanvas;
+function loadPixels(dataURL, targetCanvasName, handlePixels) {
+  console.log("loadCanvas got: "+dataURL);
+//        var canvas = document.getElementById('myCanvas');
+
+    // load image from data url
+    var imageObj = new Image();
+    imageObj.onload = function() {
+//        console.log("loadCanvas.onload got: ",context.getImageData(0, 0, 200, 200));
+        if(targetCanvasName){
+            var targetElement = document.getElementById(targetCanvasName);
+            if (!targetElement) {
+                return;
+            }
+            var context = targetElement.getContext('2d');
+            context.drawImage(this, 0, 0);
+            visualScoreCanvas = targetElement;
+        }
+        var p1d = context.getImageData(0, 0, 200, 200).data
+        var h = 200;
+        var w = 200;
+        var p2d = new Array(w);
+        for (var x=0; x<w; x++) {
+            p2d[x] = new Array(h);
+            for (var y=0; y<h; y++) {
+                var i = (x+y*w)*4;
+                p2d[x][y] = [ p1d[i], p1d[i+1], p1d[i+2], p1d[i+3] ];
+            }
+        }
+//        handlePixels(context.getImageData(0, 0, 200, 200).data);
+        handlePixels(p2d);
+    };
+
+    imageObj.src = dataURL;
+}
+/*
+var texture = PIXI.Texture.fromImage('test-alien-drawing.png');
+var bunny = new PIXI.Sprite(texture);
+// create the root of the scene graph
+var stage = new PIXI.Container();
+var renderer = PIXI.autoDetectRenderer(800, 600,{backgroundColor : 0x1099bb});
+var goalElement = document.getElementById("goal");
+if (goalElement) {
+    document.body.appendChild(renderer.view);
+}
+*/
+/*
+var loader = new PIXI.ImageLoader("test-alien-drawing.png");
+loader.onLoaded = makeSprites.bind(this);
+loader.load();
+function makeSprites() { 
+    copnsole.log("imge loaded");
+    var goalElement = document.getElementById("goal");
+    if (goalElement) {
+        var texture = PIXI.TextureCache["images/anyImage.png"];
+           renderer = PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
+        goalElement.appendChild();
+            //Add the canvas to the HTML document
+            document.body.appendChild(renderer.view);
+
+    }
+
+    //var d = document.getElementById("drawn");
+        document.body.appendChild(renderer.view);
+
+}*/
