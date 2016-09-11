@@ -79,17 +79,19 @@ function setElementHtml(id, html) {
 var htmlStory = [
     '<img src="../images/human waiting (game).png"></img> Waiting for confirmation from aliens...', 
     '<img src="../images/aliens landing (game).png"></img>Hopefully they get the signal in time. I don\'t want them destroying cities or landing on people.',
+    '<img src="../images/human waiting (game).png"></img> We hope the aliens don\'t get hit!', 
     'The End'];
 var htmlGame = [
     'I think the pitch of the noise is what shaped the clouds.  I\'m gonna try to send a simple image back. Try to send this shape using the sound of your voice.', 
     'Wait, what!?! The aliens have entered our atmosphere and are quickly making their way to the surface. The ships are unarmed, so we will let them land, but I can\'t just let them land anywhere! There is a nearby hill that would make a good landing pad. Try to send a hill shape to the aliens.',
+    'Well that\'s not what we expected.  The aliens have landed on every mountain top on earth.  At least their ships didn\'t crush anyone there.  We need to tell them to watch out for our roads so that we don\'t crush them!',
     'The End'];
 
 var stories = ['human story zero', 'human  story juan!'];
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
 
-  if (gameState.round === 2) {
+  if (gameState.round === 3) {
       window.location.href = "story-end.html";
   }
 

@@ -76,15 +76,19 @@ function setElementHtml(id, html) {
 var htmlStory = [
     '<img src="../images/alien waiting (game).png"></img>We are eagarly awating the human response to your message...', 
     '<img src="../images/aliens landing (game).png"></img>Ah!  That was clearly a drawing of land.  They want us to land.  They must be welcoming us! Engage the landing sequence! Landing...',
+    '<img src="../images/alien waiting (game).png"> Excellent - we will begin our reign of the mind from every mountain top.',
+    '<img src="../images/alien waiting (game).png"> I\'m sure we can dominate these humans with our minds instead of barbaric weapons.',
     'The End'];
-var htmlGame = ['A Mesage had been received! We can decode it by trying to match the audio message to the GridMapDrawer2000. Press the SAPCEBAR to start drawing, and move the slider to match your tone to the human\'s tone.',
- 'Oh? What\'s this? The humans have sent another message. It looks like it might be instructions on where to land.',
- 'The End'];
+var htmlGame = [
+    'A Mesage had been received! We can decode it by trying to match the audio message to the GridMapDrawer2000. Press the "D" to start drawing, and move the slider on the left to match your tone to the human\'s tone.',
+    'Oh? What\'s this? The humans have sent another message. It looks like it might be instructions on where to land.',
+    'This is a new kind of message... could these pulses mean that these simple-minded \'humens\' want to attack us?',
+    'The End'];
 
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
 
-  if (gameState.round === 2) {
+  if (gameState.round === 3) {
       window.location.href = "story-end.html";
   }
 
