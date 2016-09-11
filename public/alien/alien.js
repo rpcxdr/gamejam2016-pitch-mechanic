@@ -3,7 +3,7 @@ var playbackPitchesAray;
 var isPlaying = false;
 var BOX_SIZE = 500;
 $(document).ready(function() {
-    console.log("Hello Nerf");
+    //console.log("Hello Nerf");
     playbackPitchesAray = T("sin");//.play();
     playbackPitchesAray.pause();
 });
@@ -40,10 +40,10 @@ setInterval(function () {
     return;
   }
     if (isPlaying) {
-    console.log("playing index: "+pitchIndex );
+    //console.log("playing index: "+pitchIndex );
         var pitch = parseInt(pitches[pitchIndex]);
         playbackPitchesAray.set({freq:pitch});
-        console.log("playing pitch: "+pitch);
+        //console.log("playing pitch: "+pitch);
     }
 }, msPerFrame);
 
@@ -53,11 +53,11 @@ function play() {
     if (isPlaying) {
        playbackStartTime = new Date().getTime();
        playbackPitchesAray.play();
-       console.log("Starting playback ");
+       //console.log("Starting playback ");
     } else {
         playbackPitchesAray.pause();
     }
-    console.log("isPlaying "+isPlaying);
+    //console.log("isPlaying "+isPlaying);
 }
 var pitches;
 
@@ -103,7 +103,7 @@ stateRecord.subscribe('state', function(gameState) {
 
 document.getElementById('finishedGame').addEventListener('click', function(e) {
 
-  console.log("derpnado");
+  //console.log("derpnado");
   var gameState = stateRecord.get('state');
   gameState.player='human';
   gameState.round++;
@@ -113,7 +113,7 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
     //var drawnPixels = loadPixelsFromCanvas("play-canvas");
     //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
-    console.log(score);
+    //console.log(score);
     if(!gameState.score) gameState.score = 0;
     gameState.score += score;
     gameState.latestRoundScore = score;
@@ -126,7 +126,7 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
 });
 
 function loadPixelsFromCanvas(targetCanvasName) {
-  console.log("loadPixelsFromCanvas targetCanvasName: "+targetCanvasName);
+  //console.log("loadPixelsFromCanvas targetCanvasName: "+targetCanvasName);
   var context = getCanvasContext(targetCanvasName);
   if(!context) {
     return false;
@@ -147,10 +147,10 @@ function loadPixelsFromCanvas(targetCanvasName) {
 }
 
 function loadPixelsFromUrl(dataURL, targetCanvasName, handlePixels) {
-  console.log("loadPixels got url: "+dataURL);
+  //console.log("loadPixels got url: "+dataURL);
     var imageObj = new Image();
     imageObj.onload = function() {
-      console.log("loadPixels got image "+imageObj);
+      //console.log("loadPixels got image "+imageObj);
       var context = getCanvasContext(targetCanvasName);
       if(context) {
         context.drawImage(this, 0, 0);
@@ -212,13 +212,13 @@ function getScore(drawnPixels, goalPixels) {
                 }
             }
             if(!isScored && goal){
-                console.log("score line starting at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
+                //console.log("score line starting at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = true;
                 scoreMax++;
                 goalInColumn = true;
             }
             if(isScored && !goal){
-                console.log("score line ending at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
+                //console.log("score line ending at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = false;
             }
 

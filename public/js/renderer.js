@@ -59,12 +59,46 @@ $(document).ready(function() {
             "optional": []
         },
     }, gotStream);
+    
 
 });
 
 var currentLevel;
+var lastWhite = false;
+var displayPitchOnSide;
+
+function showPitchOnSide(){
+    displayPitchOnSide = setInterval(function() {
+        var currentPitch = BOX_SIDE_SIZE - (pd.convertPitchObjToNum(pd.getPitch()) * PITCH_FACTOR);
+        if(pd && currentPitch > 0 && currentPitch < BOX_SIDE_SIZE){
+            lastWhite = false;
+            graphics.lineStyle(1, 0xFFFFFF, 1);
+            graphics.beginFill(0xFFFFFF);
+            graphics.drawRect(0, 0, 10, BOX_SIDE_SIZE);
+            graphics.endFill();
+
+            graphics.beginFill(0x9966FF);
+            graphics.drawCircle(5, currentPitch, 5);
+            graphics.endFill();
+            renderer.render(stage);
+        }
+        if(pd && currentPitch === 500 && !lastWhite){
+            lastWhite = true;
+            graphics.lineStyle(1, 0xFFFFFF, 1);
+            graphics.beginFill(0xFFFFFF);
+            graphics.drawRect(0, 0, 10, BOX_SIDE_SIZE);
+            graphics.endFill();
+            renderer.render(stage);
+        }
+    }, REFRESH_RATE_MS);
+}
+
+function stopPitchOnSide(){
+    clearInterval(displayPitchOnSide);
+}
 
 function loadLevel(level) {
+  showPitchOnSide();
   if(currentLevel) {
     stage.removeChild(currentLevel);
   }
@@ -76,6 +110,7 @@ function loadLevel(level) {
   currentLevel = level;
   stage.addChild(level);
   renderer.render(stage);
+  //setup();
 }
 
 var graphics;
@@ -151,9 +186,11 @@ window.pd = null;
 function gotStream(stream) {
     //var pd = new PitchDetect(stream, RECORDING_DURATION, BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
     pd = new PitchDetect(stream, RECORDING_DURATION, TIME_FACTOR,/*BOX_SIDE_SIZE/Math.log10(MAX_PITCH-MIN_PITCH)*/BOX_SIDE_SIZE/(MAX_PITCH-MIN_PITCH), BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
+    //showPitchOnSide();
 }
 function startPdStream() {
     if (pd) {
+        //stopPitchOnSide();
         pd.start();
     } else {
         console.log("No pd initialized yet!");
