@@ -13,7 +13,18 @@ const client = deepstream('104.236.166.136:6020', {
 }).login();
 //const statusRecord = client.record.getRecord('room/1/status');
 //const countRecord = client.record.getRecord('room/1/count');
-const stateRecord = client.record.getRecord('room/1/state');
+var roomName = 'room/' + getParameterByName('room') + '/state';
+const stateRecord = client.record.getRecord(roomName);
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 /*
 const statusField = document.getElementById('status');

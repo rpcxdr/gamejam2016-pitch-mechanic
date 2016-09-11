@@ -23,6 +23,14 @@ $(document).ready(function() {
     PIXI.loader
     .add("level1", "../levels/L1.png")
     .add("level2", "../levels/L2.png")
+    .add("level3", "../levels/L3.png")
+    .add("level4", "../levels/L4.png")
+    .add("level5", "../levels/L5.png")
+    .add("level6", "../levels/L6.png")
+    .add("level7", "../levels/L7.png")
+    .add("level8", "../levels/L8.png")
+    .add("level9", "../levels/L9.png")
+    .add("level10", "../levels/L10.png")
     .load(setup);
 
     //Tell the `renderer` to `render` the `stage`
