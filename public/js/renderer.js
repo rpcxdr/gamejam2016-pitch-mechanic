@@ -63,6 +63,69 @@ $(document).ready(function() {
 
 });
 
+var rgbState1 = {
+    r:{
+        up: true,
+        val: 100,
+        incr: 15
+    },
+    g:{
+        up: true,
+        val: 50,
+        incr: 0
+    },
+    b:{
+        up: true,
+        val: 150,
+        incr: 5
+    }
+}
+
+var rgbState2 = {
+    r:{
+        up: true,
+        val: 2,
+        incr: 0
+    },
+    g:{
+        up: true,
+        val: 50,
+        incr: 10
+    },
+    b:{
+        up: true,
+        val: 152,
+        incr: 12
+    }
+}
+
+function getRgb(rgbState){
+    $.each(rgbState, (key, color) => {
+        if(color.up){
+            if(color.val + color.incr > 200){
+                color.up = false;
+                color.val -= color.incr;
+            } else {
+                color.val += color.incr;
+            }
+        } else {
+            if(color.val - color.incr < 0){
+                color.up = true;
+                color.val += color.incr;
+            } else {
+                color.val -= color.incr;
+            }
+        }
+    });
+    return {r: rgbState.r.val, g: rgbState.g.val, b: rgbState.b.val};
+}
+
+function rgbToHex(r, g, b) {
+    return ((1 << 24) + (r << 16) + (g << 8) + b);
+}
+
+
+
 var currentLevel;
 var lastWhite = false;
 var displayPitchOnSide;
@@ -159,7 +222,14 @@ var handlePitch = function(lastTime, lastPitch, time, pitch){
     graphics.endFill();
 
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        graphics.lineStyle(4, 0x999999, 1);
+        var rgb1 = getRgb(rgbState1);
+        var rgb2 = getRgb(rgbState2);
+        graphics.lineStyle(10, rgbToHex(rgb1.r, rgb1.g, rgb1.b), 1);
+        if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
+          graphics.moveTo(lastTime, lastPitch);
+          graphics.lineTo(time, pitch);
+        }
+        graphics.lineStyle(4, rgbToHex(rgb2.r, rgb2.g, rgb2.b), 1);
         if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
           graphics.moveTo(lastTime, lastPitch);
           graphics.lineTo(time, pitch);
