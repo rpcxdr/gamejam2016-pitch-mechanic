@@ -19,7 +19,10 @@
         <div class="one-half column">
         </div>
         <div class="one-half column">
-          
+                      <h3> Final score: </h3>
+            <h4 id = "score">
+            </h4>
+
 After some negotiating, they were willing to let us join them on their planet. 
 We asked them many quesitons about what life looked like for them, as we had no eyes to see, and learned more about this odd planet.
 Apparently a creature called ‘doge’ is a spiny blob with a muzzle and ears, and a ‘tree’ is... we're not quite sure yet.
@@ -28,6 +31,18 @@ We were pleased to learn what common objects looked like on Earth.
 With what we learned, we successfully enslaved the humans.  They provide us homes, and as much food and water as we could desire.</div>
       </div>
 </div>
+
+        <script>
+                var score = window.location.href.split("?")[1].split("=")[1];
+                var message;
+                if (parseInt(score)>75) {
+                    message = "CONTRATS! Your sound and art skills will bring these humans to their knees!";
+                } else {
+                    message = "SORRY.  This miscommunication was clearly the fault of the human.";
+                }
+                document.getElementById('score').innerHTML = score + " " + message;
+        </script>
+
 
 <audio src="../music/NMGJ_2016_Audio.mp3" autoplay loop>
 <p>Your browser does not support the audio element.</p>

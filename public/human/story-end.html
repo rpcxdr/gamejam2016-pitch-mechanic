@@ -19,6 +19,9 @@
         <div class="one-half column">
         </div>
         <div class="one-half column">
+            <h3> Final score: </h3>
+            <h4 id = "score">
+            </h4>
             The communication project went terribly wrong. Apparently cats looked like a puffball on a stick, and hands are these weird abstract shapes without fingers. 
             On the other hand, the aliens have have become great pets.  People put them in dog houses cages, and just need to feed them water and gerbil pellets.
             <br /><br />
@@ -28,6 +31,19 @@
 <audio src="../music/NMGJ_2016_Audio.mp3" autoplay loop>
 <p>Your browser does not support the audio element.</p>
 </audio>
+
+
+        <script>
+                var score = window.location.href.split("?")[1].split("=")[1];
+                var message;
+                if (parseInt(score)>75) {
+                    message = "CONTRATS! You can communicate through sound and art!";
+                } else {
+                    message = "Your sound and art communication skills could be better";
+                }
+                document.getElementById('score').innerHTML = score + " " + message;
+        </script>
+
 
 </body>
 </html>

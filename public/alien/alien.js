@@ -89,7 +89,7 @@ stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
 
   if (gameState.round === 3) {
-      window.location.href = "story-end.html";
+      window.location.href = "story-end.html?score="+gameState.score;
   }
 
   if (gameState.player === 'alien') {
