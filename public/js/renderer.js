@@ -29,13 +29,13 @@ $(document).ready(function() {
    // var texture = PIXI.utils.TextureCache["../levels/L2.png"];
     //window.level = new PIXI.Sprite(texture);
     /*
-    var line = new PIXI.Graphics();
-    line.lineStyle(4, 0xFFFFFF, 1);
-    line.moveTo(100, 100);
-    line.lineTo(80, 50);
-    //line.x = 32;
-    //line.y = 32;
-    stage.addChild(line);
+    var graphics = new PIXI.Graphics();
+    graphics.graphicsStyle(4, 0xFFFFFF, 1);
+    graphics.moveTo(100, 100);
+    graphics.graphicsTo(80, 50);
+    //graphics.x = 32;
+    //graphics.y = 32;
+    stage.addChild(graphics);
     renderer.render(stage);
     */
 
@@ -60,7 +60,7 @@ function loadLevel(level) {
   if(currentLevel) {
     stage.removeChild(currentLevel);
   }
-  if(line) line.clear();
+  if(graphics) graphics.clear();
   console.log(PIXI.loader.resources, 'level' + level);
   var level = new PIXI.Sprite(
     PIXI.loader.resources['level' + level].texture
@@ -70,15 +70,15 @@ function loadLevel(level) {
   renderer.render(stage);
 }
 
-var line;
+var graphics;
 
 //This `setup` function will run when the image has loaded
 function setup() {
 
   loadLevel(1);
 
-  line = new PIXI.Graphics();
-  stage.addChild(line);
+  graphics = new PIXI.Graphics();
+  stage.addChild(graphics);
 
   renderer.backgroundColor = 0xffffff;
 
@@ -106,15 +106,23 @@ function lineDistance( point1, point2 )
 
 
 var handlePitch = function(lastTime, lastPitch, time, pitch){
-    console.log("hello?", lastPitch, lastTime, pitch, time);
+    graphics.lineStyle(1, 0xFFFFFF, 1);
+    graphics.beginFill(0xFFFFFF);
+    graphics.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
+    graphics.endFill();
+
+    graphics.beginFill(0x9966FF);
+    graphics.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
+    graphics.endFill();
+
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        line.lineStyle(4, 0x999999, 1);
+        graphics.lineStyle(4, 0x999999, 1);
         if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
-          line.moveTo(lastTime, lastPitch);
-          line.lineTo(time, pitch);
+          graphics.moveTo(lastTime, lastPitch);
+          graphics.lineTo(time, pitch);
         }
-        renderer.render(stage);
     }
+    renderer.render(stage);
 }
 
 
@@ -135,7 +143,6 @@ window.pd = null;
 function gotStream(stream) {
     //var pd = new PitchDetect(stream, RECORDING_DURATION, BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
     pd = new PitchDetect(stream, RECORDING_DURATION, TIME_FACTOR,/*BOX_SIDE_SIZE/Math.log10(MAX_PITCH-MIN_PITCH)*/BOX_SIDE_SIZE/(MAX_PITCH-MIN_PITCH), BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
-    pd.start();
 }
 function startPdStream() {
     if (pd) {

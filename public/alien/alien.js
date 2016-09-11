@@ -20,13 +20,13 @@ const statusField = document.getElementById('status');
 */
 document.getElementById('start').addEventListener('click', function(e) {
     e.preventDefault();
+    console.log('test');
     const gameState = {
       round: 0,
+      player: 'human'
     };
     stateRecord.set('state', gameState);
 });
-
-
 
 setInterval(function () {
   var playbackCurrentTime = new Date().getTime();
@@ -57,9 +57,6 @@ function play() {
     }
     console.log("isPlaying "+isPlaying);
 }
-
-window.play = play;
-
 var pitches;
 
 var stories = ['story zero', 'story 1'];
@@ -73,6 +70,7 @@ stateRecord.subscribe('state', function(gameState) {
   } else {
     // show stories[gameState.round]
     document.getElementById('story').innerText = stories[gameState.round];
+    clearStage();
   }
 });
 
@@ -84,6 +82,8 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
   gameState.round++;
   loadPixelsFromUrl("/levels/L" + gameState.round + "goal.png", "scoring-canvas", function(pixels) {
     var drawnPixels = loadPixelsFromPitchData(sd.exportPitches());
+    //var drawnPixels = loadPixelsFromCanvas("play-canvas");
+    //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
     gameState.score += score;
     stateRecord.set('state', gameState);

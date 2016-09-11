@@ -8,14 +8,13 @@ const PITCH_FACTOR = BOX_SIDE_SIZE / MAX_PITCH;
 const TIME_FACTOR = BOX_SIDE_SIZE / RECORDING_DURATION;
 const TWEAK_FACTOR = 0.5;
 
-var line;
+var graphics;
 
 $(document).ready(function() {
-
     var time = 0;
     //Create the renderer
     window.renderer = new PIXI.CanvasRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE, {view: document.getElementById('play-canvas')});
-
+    window.renderer.backgroundColor = 0xFFFFFF;
     //Add the canvas to the HTML document
     document.body.appendChild(renderer.view);
 
@@ -23,11 +22,11 @@ $(document).ready(function() {
 
     //Create a container object called the `stage`
     window.stage = new PIXI.Container();
+    renderer.render(stage);
     window.sd = new SliderDrawer(RECORDING_DURATION, BOX_SIDE_SIZE, TIME_FACTOR, PITCH_FACTOR, REFRESH_RATE_MS, handlePitch)
 
-    line = new PIXI.Graphics();
-    stage.addChild(line);
-
+    graphics = new PIXI.Graphics();
+    stage.addChild(graphics);
 
     $("#pitch").mousedown(function () {
         sd.record();
@@ -51,22 +50,30 @@ $(document).ready(function() {
 });
 
 function clearStage() {
-  line.clear();
+  graphics.clear();
   renderer.render(stage);
 }
+window.clearStage = clearStage;
+
 
 var handlePitch = function(lastTime, lastPitch, time, pitch){
+    console.log("hello?", lastTime, lastPitch, time, pitch);
+    graphics.lineStyle(1, 0xFFFFFF, 1);
+    graphics.beginFill(0xFFFFFF);
+    graphics.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
+    graphics.endFill();
+
+    graphics.beginFill(0x9966FF);
+    graphics.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
+    graphics.endFill();
+
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        line = new PIXI.Graphics();
-        line.lineStyle(6, 0xFFFFFF, 1);
-        line.moveTo(lastTime, lastPitch);
-        line.lineTo(time, pitch);
-        renderer.render(stage);
+        graphics.lineStyle(6, 0x000000, 1);
+        graphics.moveTo(lastTime, lastPitch);
+        graphics.lineTo(time, pitch);
     }
+    renderer.render(stage);
 }
-
-
-
 
 class SliderDrawer {
   constructor(recordDuration, boxSide, timeFactor, pitchFactor, msDelay, handler) {
@@ -80,6 +87,7 @@ class SliderDrawer {
     this.isRecording = false;
     this.pitchFactor = pitchFactor;
     this.boxSide = boxSide;
+    this.i = 0;
   }
 
   record(){
@@ -111,14 +119,16 @@ class SliderDrawer {
     const self = this;
     var interval = setInterval(function() {
         if(self.isRunning){
-
+            self.i++;
             self.pitchArr.push(self.getPitch() * self.pitchFactor);
-            self.handler(
-                self.currentTime * self.timeFactor,
-                self.boxSide - self.pitchArr[self.pitchArr.length - 2],
-                (self.currentTime + self.msDelay) * self.timeFactor,
-                self.boxSide -self.pitchArr[self.pitchArr.length - 1]
-            );
+            if(self.i % 10 === 0){
+                self.handler(
+                    (self.currentTime - 10 * self.msDelay) * self.timeFactor,
+                    self.boxSide - self.pitchArr[self.pitchArr.length - 11],
+                    (self.currentTime + self.msDelay) * self.timeFactor,
+                    self.boxSide -self.pitchArr[self.pitchArr.length - 1]
+                );
+            }
             self.currentTime = self.currentTime + self.msDelay;
         }
         if(self.currentTime > self.recordDuration){
