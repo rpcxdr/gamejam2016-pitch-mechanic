@@ -1,5 +1,5 @@
 "use strict";
-const REFRESH_RATE_MS = 60;
+const REFRESH_RATE_MS = 6;
 const RECORDING_DURATION = 3000; //3 seconds
 const BOX_SIDE_SIZE = 500;
 const MAX_PITCH = 1000;
@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     //Create a container object called the `stage`
     window.stage = new PIXI.Container();
-    var sd = new SliderDrawer(RECORDING_DURATION, BOX_SIDE_SIZE, TIME_FACTOR, PITCH_FACTOR, REFRESH_RATE_MS, handlePitch)
+    window.sd = new SliderDrawer(RECORDING_DURATION, BOX_SIDE_SIZE, TIME_FACTOR, PITCH_FACTOR, REFRESH_RATE_MS, handlePitch)
 
     $("#pitch").mousedown(function () {
         sd.record();
@@ -47,7 +47,7 @@ var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastTime, lastPitch, time, pitch);
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
         var line = new PIXI.Graphics();
-        line.lineStyle(4, 0xFFFFFF, 1);
+        line.lineStyle(6, 0xFFFFFF, 1);
         line.moveTo(lastTime, lastPitch);
         line.lineTo(time, pitch);
         stage.addChild(line);
@@ -96,18 +96,18 @@ class SliderDrawer {
   start(){
     this.currentTime = 0;
     this.pitchArr = [];
-    this.pitchArr.push(this.getPitch());
+    this.pitchArr.push(this.getPitch() * this.pitchFactor);
     this.isRunning = true;
     const self = this;
     var interval = setInterval(function() {
         if(self.isRunning){
             
-            self.pitchArr.push(self.getPitch());
+            self.pitchArr.push(self.getPitch() * self.pitchFactor);
             self.handler(
                 self.currentTime * self.timeFactor,
-                self.boxSide - self.pitchArr[self.pitchArr.length - 2] * self.pitchFactor,
+                self.boxSide - self.pitchArr[self.pitchArr.length - 2],
                 (self.currentTime + self.msDelay) * self.timeFactor,
-                self.boxSide -self.pitchArr[self.pitchArr.length - 1] * self.pitchFactor
+                self.boxSide -self.pitchArr[self.pitchArr.length - 1]
             );
             self.currentTime = self.currentTime + self.msDelay;
         }
@@ -120,6 +120,7 @@ class SliderDrawer {
   }
 
   exportPitches(){
+      console.log("WHOOOAOAOHSFLSJ", this.pitchArr)
       return this.pitchArr;
   }
 

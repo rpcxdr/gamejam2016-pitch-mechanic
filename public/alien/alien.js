@@ -1,6 +1,7 @@
 "use strict";
 var playbackPitchesAray;
 var isPlaying = false;
+var BOX_SIZE = 500;
 $(document).ready(function() {
     console.log("Hello Nerf");
     playbackPitchesAray = T("sin");//.play();
@@ -79,8 +80,9 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
   gameState.player='human';
   gameState.round++;
   loadPixelsFromUrl("/levels/L" + gameState.round + "goal.png", "scoring-canvas", function(pixels) {
-    var drawnPixels = loadPixelsFromCanvas("play-canvas");
-    console.log(drawnPixels);
+    var drawnPixels = loadPixelsFromPitchData(sd.exportPitches());
+    //var drawnPixels = loadPixelsFromCanvas("play-canvas");
+    //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
     gameState.score += score;  
     //stateRecord.set('state', gameState);
@@ -95,9 +97,9 @@ function loadPixelsFromCanvas(targetCanvasName) {
   if(!context) {
     return false;
   }
-  var p1d = context.getImageData(0, 0, 200, 200).data;
-  var h = 500;
-  var w = 500;
+  var p1d = context.getImageData(0, 0, BOX_SIZE, BOX_SIZE).data;
+  var h = BOX_SIZE;
+  var w = BOX_SIZE;
   var p2d = new Array(w);
   for (var x=0; x<w; x++) {
       p2d[x] = new Array(h);
@@ -106,6 +108,7 @@ function loadPixelsFromCanvas(targetCanvasName) {
           p2d[x][y] = [ p1d[i], p1d[i+1], p1d[i+2], p1d[i+3] ];
       }
   }
+  //console.log("woooah", p2d);
   return p2d;
 }
 
@@ -124,6 +127,16 @@ function loadPixelsFromUrl(dataURL, targetCanvasName, handlePixels) {
     imageObj.src = dataURL;
 }
 
+function loadPixelsFromPitchData(pitchData){
+    var p2d = new Array(BOX_SIZE);
+    for(var x = 0; x < BOX_SIZE; x++){
+        p2d[x] = new Array(BOX_SIZE);
+        //console.log("placing ", x, pitchData[x]);
+        p2d[x][pitchData[x]] = (pitchData[x] ? true : false);
+    }
+    return p2d;
+}
+
 function getCanvasContext(targetCanvasName) {
   if(targetCanvasName){
           var targetElement = document.getElementById(targetCanvasName);
@@ -136,12 +149,13 @@ function getCanvasContext(targetCanvasName) {
 }
 
 function getScore(drawnPixels, goalPixels) {
+    var visualScoreCanvas = document.getElementById("drawn")
   /*loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
     //console.log("loadCanvas.onload sfssss got: ",drawnPixels);
     loadPixels("test-goal-drawing.png", "drawn",function (goalPixels) {
         //console.log("loadCanvas.onload sfssss2 got: ",goalPixels);*/
-    var h = 500;
-    var w = 500;
+    var h = BOX_SIZE;
+    var w = BOX_SIZE;
     var p2d = new Array(w);
     var scoreMax = 0;
     var scoreTotal = 0;
@@ -149,12 +163,15 @@ function getScore(drawnPixels, goalPixels) {
         p2d[x] = new Array(h);
         var goalInColumn = false;
         var drawnInColumn = false;
+        var drawnCountInColumn = 0;
         var isScored = false;
         for (var y=0; y<h; y++) {
             //console.log(x,y);
-            var drawn = drawnPixels[x][y][0];
-            var goal = !goalPixels[x][y][0];
+            var drawn = drawnPixels[x][y];
+            var goal = (!goalPixels[x][y][0] && !goalPixels[x][y][3]);
             if (drawn) {
+                drawnCountInColumn++;
+                console.log("there's a pixel drawn at:", x , y);
                 drawnInColumn = true;
                 if(goal){
                     scoreTotal++;
@@ -178,7 +195,6 @@ function getScore(drawnPixels, goalPixels) {
             visualScoreContext.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
             visualScoreContext.fillRect( x, y, 1, 1 );
             */
-
         }
         if(!goalInColumn && drawnInColumn){
                 scoreMax++;
@@ -187,14 +203,51 @@ function getScore(drawnPixels, goalPixels) {
             scoreMax++;
             scoreTotal++;
         }
+        //console.log("yo!", drawnCountInColumn);
     }
-    scoreTotal /= 2;
+    //scoreTotal /= 2;
     console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
         /*
     });
 });
   */
 }
+
+
+/*function loadPixels(dataURL, targetCanvasName, handlePixels) {
+  console.log("loadCanvas got: "+dataURL);
+//        var canvas = document.getElementById('myCanvas');
+
+    // load image from data url
+    var imageObj = new Image();
+    imageObj.onload = function() {
+//        console.log("loadCanvas.onload got: ",context.getImageData(0, 0, 200, 200));
+        if(targetCanvasName){
+            var targetElement = document.getElementById(targetCanvasName);
+            if (!targetElement) {
+                return;
+            }
+            var context = targetElement.getContext('2d');
+            context.drawImage(this, 0, 0);
+            visualScoreCanvas = targetElement;
+        }
+        var p1d = context.getImageData(0, 0, BOX_SIZE, BOX_SIZE).data
+        var h = BOX_SIZE;
+        var w = BOX_SIZE;
+        var p2d = new Array(w);
+        for (var x=0; x<w; x++) {
+            p2d[x] = new Array(h);
+            for (var y=0; y<h; y++) {
+                var i = (x+y*w)*4;
+                p2d[x][y] = [ p1d[i], p1d[i+1], p1d[i+2], p1d[i+3] ];
+            }
+        }
+//        handlePixels(context.getImageData(0, 0, 200, 200).data);
+        handlePixels(p2d);
+    };
+
+    imageObj.src = dataURL;
+}*/
 /*
 statusRecord.whenReady(function() {
   statusField.innerHTML = statusRecord.get('alien-status');
