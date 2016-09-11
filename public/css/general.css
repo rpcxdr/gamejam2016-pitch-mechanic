@@ -43,6 +43,10 @@ body {
   border: 2px solid #656f88;
 }
 
+#game {
+  padding: 4rem 10rem;
+}
+
 canvas {
   margin: 1rem auto;
   border: 2px solid black;

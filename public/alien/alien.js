@@ -3,7 +3,7 @@ var playbackPitchesAray;
 var isPlaying = false;
 var BOX_SIZE = 500;
 $(document).ready(function() {
-    console.log("Hello Nerf");
+    //console.log("Hello Nerf");
     playbackPitchesAray = T("sin");//.play();
     playbackPitchesAray.pause();
 });
@@ -40,10 +40,10 @@ setInterval(function () {
     return;
   }
     if (isPlaying) {
-    console.log("playing index: "+pitchIndex );
+    //console.log("playing index: "+pitchIndex );
         var pitch = parseInt(pitches[pitchIndex]);
         playbackPitchesAray.set({freq:pitch});
-        console.log("playing pitch: "+pitch);
+        //console.log("playing pitch: "+pitch);
     }
 }, msPerFrame);
 
@@ -53,11 +53,11 @@ function play() {
     if (isPlaying) {
        playbackStartTime = new Date().getTime();
        playbackPitchesAray.play();
-       console.log("Starting playback ");
+       //console.log("Starting playback ");
     } else {
         playbackPitchesAray.pause();
     }
-    console.log("isPlaying "+isPlaying);
+    //console.log("isPlaying "+isPlaying);
 }
 var pitches;
 
@@ -68,37 +68,57 @@ function showElement(id) {
     document.getElementById(id).style.display = "block";
 }
 
-var stories = ['story zero', 'story 1'];
+function setElementHtml(id, html) {
+    document.getElementById(id).innerHTML = html;
+}
+
+
+var htmlStory = [
+    '<img src="../images/alien waiting (game).png"></img>We are eagarly awating the human response to your message...', 
+    '<img src="../images/aliens landing (game).png"></img>Ah!  That was clearly a drawing of land.  They want us to land.  They must be welcoming us! Engage the landing sequence! Landing...',
+    'The End'];
+var htmlGame = ['A Mesage had been received! We can decode it by trying to match the audio message to the GridMapDrawer2000. Press the SAPCEBAR to start drawing, and move the slider to match your tone to the human\'s tone.',
+ 'Oh? What\'s this? The humans have sent another message. It looks like it might be instructions on where to land.',
+ 'The End'];
+
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
+
+  if (gameState.round === 2) {
+      window.location.href = "story-end.html";
+  }
+
   if (gameState.player === 'alien') {
     pitches = gameState.pitches;
     showElement('game');
     hideElement('story');
+    setElementHtml('game-story', htmlGame[gameState.round]);
   } else {
     hideElement('game');
     showElement('story');
+    setElementHtml('story', htmlStory[gameState.round]);
     clearStage();
   }
 });
 
 document.getElementById('finishedGame').addEventListener('click', function(e) {
 
-  console.log("derpnado");
+  //console.log("derpnado");
   var gameState = stateRecord.get('state');
   gameState.player='human';
   gameState.round++;
+
   loadPixelsFromUrl("/levels/L" + gameState.round + "goal.png", "scoring-canvas", function(pixels) {
     var drawnPixels = loadPixelsFromPitchData(sd.exportPitches());
     //var drawnPixels = loadPixelsFromCanvas("play-canvas");
     //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
-    console.log(score);
+    //console.log(score);
     if(!gameState.score) gameState.score = 0;
     gameState.score += score;
     gameState.latestRoundScore = score;
-    $("#total_score").html(gameState.score);
-    $("#round_score").html(score);
+    $("#total_score").html(Math.floor(gameState.score));
+    $("#round_score").html(Math.floor(score));
     stateRecord.set('state', gameState);
   });
 
@@ -106,7 +126,7 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
 });
 
 function loadPixelsFromCanvas(targetCanvasName) {
-  console.log("loadPixelsFromCanvas targetCanvasName: "+targetCanvasName);
+  //console.log("loadPixelsFromCanvas targetCanvasName: "+targetCanvasName);
   var context = getCanvasContext(targetCanvasName);
   if(!context) {
     return false;
@@ -127,10 +147,10 @@ function loadPixelsFromCanvas(targetCanvasName) {
 }
 
 function loadPixelsFromUrl(dataURL, targetCanvasName, handlePixels) {
-  console.log("loadPixels got url: "+dataURL);
+  //console.log("loadPixels got url: "+dataURL);
     var imageObj = new Image();
     imageObj.onload = function() {
-      console.log("loadPixels got image "+imageObj);
+      //console.log("loadPixels got image "+imageObj);
       var context = getCanvasContext(targetCanvasName);
       if(context) {
         context.drawImage(this, 0, 0);
@@ -192,13 +212,13 @@ function getScore(drawnPixels, goalPixels) {
                 }
             }
             if(!isScored && goal){
-                console.log("score line starting at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
+                //console.log("score line starting at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = true;
                 scoreMax++;
                 goalInColumn = true;
             }
             if(isScored && !goal){
-                console.log("score line ending at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
+                //console.log("score line ending at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = false;
             }
 

@@ -164,7 +164,7 @@ class PitchDetect {
     const self = this;
     var interval = setInterval(function() {
         if(self.isRunning){
-            console.log("PITCH FACTAAAAA:", self.pitchFactor, Math.log10(self.pitchArr[self.pitchArr.length - 1]), self.pitchArr[self.pitchArr.length - 1]);
+            //console.log("PITCH FACTAAAAA:", self.pitchFactor, Math.log10(self.pitchArr[self.pitchArr.length - 1]), self.pitchArr[self.pitchArr.length - 1]);
             self.pitchArr.push(self.convertPitchObjToNum(self.getPitch()));
             self.handler(
                 self.currentTime * self.timeFactor,
