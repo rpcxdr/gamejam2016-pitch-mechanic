@@ -136,7 +136,6 @@ class SliderDrawer {
   }
 
   exportPitches(){
-      console.log("WHOOOAOAOHSFLSJ", this.pitchArr)
       return this.pitchArr;
   }
 
