@@ -20,8 +20,13 @@ $(document).ready(function() {
     //Create a container object called the `stage`
     window.stage = new PIXI.Container();
 
+    PIXI.loader
+    .add("../levels/L2.png")
+    .load(setup);
+
     //Tell the `renderer` to `render` the `stage`
-    
+   // var texture = PIXI.utils.TextureCache["../levels/L2.png"];
+    //window.level = new PIXI.Sprite(texture);
     /*
     var line = new PIXI.Graphics();
     line.lineStyle(4, 0xFFFFFF, 1);
@@ -48,6 +53,21 @@ $(document).ready(function() {
 
 });
 
+//This `setup` function will run when the image has loaded
+function setup() {
+
+  //Create the `cat` sprite from the texture
+  var level = new PIXI.Sprite(
+    PIXI.loader.resources["../levels/L2.png"].texture
+  );
+
+  //Add the cat to the stage
+  stage.addChild(level);
+
+  //Render the stage   
+  renderer.render(stage);
+}
+
 function error() {
     alert('Stream generation failed.');
 }
@@ -59,6 +79,7 @@ var handlePitch = function(lastTime, lastPitch, time, pitch){
         line.lineStyle(4, 0xFFFFFF, 1);
         line.moveTo(lastTime, lastPitch);
         line.lineTo(time, pitch);
+        stage.addChild(level);
         stage.addChild(line);
         renderer.render(stage);
     }
