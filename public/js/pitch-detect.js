@@ -157,7 +157,6 @@ class PitchDetect {
   }
 
   start(){
-    console.log("derpaherp?");
     this.currentTime = 0;
     this.pitchArr = [];
     this.pitchArr.push(this.convertPitchObjToNum(this.getPitch()));
@@ -183,6 +182,9 @@ class PitchDetect {
     }, this.msDelay);
   }
 
+  exportPitches(){
+      return this.pitchArr;
+  }
 
   convertPitchObjToNum(pitch){
       if(pitch.type === 'vague'){
