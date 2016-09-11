@@ -16,7 +16,7 @@
     </div>
 
     <div id="story">
-      this is some story
+      We are eagarly awating the human response to your message...
     </div>
 
     <div style="display: none;" id="game">
@@ -43,12 +43,17 @@
       </div>
       <div class="row">
         <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
-        <a class="button" id="start" value="Start" href="javascript:;">Start</a>
+<!--        <a class="button" id="start" value="Start" href="javascript:;">Start</a> -->
         <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
       </div>
       <div class="row">
-        <input type="range" id="pitch" name="pitch" min="0" max="1000">
-        <div id="play-canvas"></div>
+        <div class="one-half column">
+          <input type="range" id="pitch" name="pitch" min="0" max="1000">
+          <div id="play-canvas"></div>
+        </div>
+        <div id="game-story" class="one-half column">
+
+        </div>
       </div>
       <div class="row">
         <a class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>

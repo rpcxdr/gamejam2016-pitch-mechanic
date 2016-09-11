@@ -31,7 +31,17 @@
         </div>
       </div>
       <div style="text-align:center">
-        <a class="button button-primary" href="index.html">START THE GAME</a>
+
+        <a class="button button-primary" id="start" href="#">START THE GAME</a>
+        <script>
+            document.getElementById('start').addEventListener('click', function (event) {
+                event.preventDefault();
+                window.location.href = "index.html?"+window.location.href.split("?")[1];
+            } );
+                 </script>
+
+
+
       </div>
 </div>
 <audio src="../music/NMGJ_2016_Audio.mp3" autoplay loop>

@@ -68,16 +68,35 @@ function showElement(id) {
     document.getElementById(id).style.display = "block";
 }
 
-var stories = ['story zero', 'story 1'];
+function setElementHtml(id, html) {
+    document.getElementById(id).innerHTML = html;
+}
+
+
+var htmlStory = [
+    '<img src="../images/alien waiting (game).png"></img>We are eagarly awating the human response to your message...', 
+    '<img src="../images/aliens landing (game).png"></img>Ah!  That was clearly a drawing of land.  They want us to land.  They must be welcoming us! Engage the landing sequence! Landing...',
+    'The End'];
+var htmlGame = ['A Mesage had been received! We can decode it by trying to match the audio message to the GridMapDrawer2000. Press the SAPCEBAR to start drawing, and move the slider to match your tone to the human\'s tone.',
+ 'Oh? What\'s this? The humans have sent another message. It looks like it might be instructions on where to land.',
+ 'The End'];
+
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
+
+  if (gameState.round === 2) {
+      window.location.href = "story-end.html";
+  }
+
   if (gameState.player === 'alien') {
     pitches = gameState.pitches;
     showElement('game');
     hideElement('story');
+    setElementHtml('game-story', htmlGame[gameState.round]);
   } else {
     hideElement('game');
     showElement('story');
+    setElementHtml('story', htmlStory[gameState.round]);
     clearStage();
   }
 });
@@ -88,6 +107,7 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
   var gameState = stateRecord.get('state');
   gameState.player='human';
   gameState.round++;
+
   loadPixelsFromUrl("/levels/L" + gameState.round + "goal.png", "scoring-canvas", function(pixels) {
     var drawnPixels = loadPixelsFromPitchData(sd.exportPitches());
     //var drawnPixels = loadPixelsFromCanvas("play-canvas");
@@ -97,8 +117,8 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
     if(!gameState.score) gameState.score = 0;
     gameState.score += score;
     gameState.latestRoundScore = score;
-    $("#total_score").html(gameState.score);
-    $("#round_score").html(score);
+    $("#total_score").html(Math.floor(gameState.score));
+    $("#round_score").html(Math.floor(score));
     stateRecord.set('state', gameState);
   });
 
