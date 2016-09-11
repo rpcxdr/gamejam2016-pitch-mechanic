@@ -15,13 +15,14 @@ $(document).ready(function() {
     window.renderer = PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
 
     //Add the canvas to the HTML document
-    document.body.appendChild(renderer.view);
+    document.getElementById('play-field').appendChild(renderer.view);
 
     //Create a container object called the `stage`
     window.stage = new PIXI.Container();
 
     PIXI.loader
-    .add("../levels/L2.png")
+    .add("level1", "../levels/L1.png")
+    .add("level2", "../levels/L2.png")
     .load(setup);
 
     //Tell the `renderer` to `render` the `stage`
@@ -58,13 +59,17 @@ function setup() {
 
   //Create the `cat` sprite from the texture
   var level = new PIXI.Sprite(
-    PIXI.loader.resources["../levels/L2.png"].texture
+    PIXI.loader.resources.level1.texture
   );
+
+  console.log(PIXI.loader.resources);
 
   //Add the cat to the stage
   stage.addChild(level);
 
-  //Render the stage   
+  renderer.backgroundColor = 0xffffff;
+
+  //Render the stage
   renderer.render(stage);
 }
 
@@ -72,15 +77,30 @@ function error() {
     alert('Stream generation failed.');
 }
 
+function lineDistance( point1, point2 )
+{
+  var xs = 0;
+  var ys = 0;
+
+  xs = point2.x - point1.x;
+  xs = xs * xs;
+
+  ys = point2.y - point1.y;
+  ys = ys * ys;
+
+  return Math.sqrt( xs + ys );
+}
+
 var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastPitch, lastTime, pitch, time);
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
         var line = new PIXI.Graphics();
-        line.lineStyle(4, 0xFFFFFF, 1);
-        line.moveTo(lastTime, lastPitch);
-        line.lineTo(time, pitch);
-        stage.addChild(level);
-        stage.addChild(line);
+        line.lineStyle(4, 0x999999, 1);
+        if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
+          line.moveTo(lastTime, lastPitch);
+          line.lineTo(time, pitch);
+          stage.addChild(line);
+        }
         renderer.render(stage);
     }
 }
@@ -88,7 +108,7 @@ var handlePitch = function(lastTime, lastPitch, time, pitch){
 
 function getUserMedia(dictionary, callback) {
     try {
-        navigator.getUserMedia = 
+        navigator.getUserMedia =
         	navigator.getUserMedia ||
         	navigator.webkitGetUserMedia ||
         	navigator.mozGetUserMedia;

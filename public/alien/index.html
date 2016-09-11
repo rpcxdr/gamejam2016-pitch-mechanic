@@ -3,19 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>ALIEN</title>
-      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
-      <script src="/timbre.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
+    <script src="/timbre.js"></script>
+    <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
   </head>
   <body>
-    <h1>ALIEN</h1>
-    <div id="story"></div>
-    <input type="button" id="finishedGame" value="finishedGame" />
-    <input type="range" id="pitch" name="pitch" min="0" max="1000">
-    <input type="button" id="play" onclick="play()" value="Play!">
-    <input type="button" name="name" value="DONE" onclick="done();">
-    <input type="button" id="start" value="Start">
+    <div class="header">
+      <h1>A Tack On Tie Tan</h1>
+      <h2>Alien Edition</h2>
+    </div>
+    <p id="story"></p>
     <canvas id="play-canvas"></canvas>
+    <a class="button" id="finishedGame" value="finishedGame">Finish</a>
+    <input type="range" id="pitch" name="pitch" min="0" max="1000">
+    <a class="button" id="play" onclick="play()" value="Play!">Play</a>
+    <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
+    <a class="button" id="start" value="Start">Start</a>
     <canvas id="scoring-canvas" style="position: absolute;"></canvas>
     <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
     <script src="../js/alien-renderer.js" charset="utf-8"></script>

@@ -3,15 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>HUMAN</title>
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
   </head>
   <body>
-    <h1>HUMAN</h1>
-    <h3>status</h3>
-    <p id="story">ready</p>
+    <div class="header">
+      <h1>A Tack On Tie Tan</h1>
+      <h2>Human Edition</h2>
+    </div>
+    <p id="story"></p>
 <!--    <input type="button" name="name" value="DONE" onclick="done();"> -->
-    <input type="button" id="startRecording" value="startRecording" />
 
-    <input type="button" id="finishedGame" value="finishedGame" />
+    <a class="button" id="finishedGame" href="javascript:;">Finished</a>
+    <div id="play-field"></div>
+    <a class="button" id="startRecording" href="javascript:;">Start!</a>
+
+    <div class="how-to-play">
+      <h4>How to play</h4>
+      <p>1. Press play and get ready</p>
+      <p>2. Use your voice pitch to trace the path on the screen</p>
+    </div>
 
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
