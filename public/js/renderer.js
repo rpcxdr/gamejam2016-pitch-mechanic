@@ -93,6 +93,18 @@ function lineDistance( point1, point2 )
 
 var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastPitch, lastTime, pitch, time);
+    var rectangle = new PIXI.Graphics();
+    rectangle.lineStyle(1, 0xFFFFFF, 1);
+    rectangle.beginFill(0xFFFFFF);
+    rectangle.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
+    rectangle.endFill();
+    renderer.render(stage);
+    stage.addChild(rectangle);
+    var circle = new PIXI.Graphics();
+    circle.beginFill(0x9966FF);
+    circle.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
+    circle.endFill();
+    stage.addChild(circle);
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
         var line = new PIXI.Graphics();
         line.lineStyle(4, 0x999999, 1);
@@ -101,8 +113,8 @@ var handlePitch = function(lastTime, lastPitch, time, pitch){
           line.lineTo(time, pitch);
           stage.addChild(line);
         }
-        renderer.render(stage);
     }
+    renderer.render(stage);
 }
 
 
