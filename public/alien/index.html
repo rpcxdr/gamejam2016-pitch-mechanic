@@ -3,14 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>ALIEN</title>
+      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
+      <script src="/timbre.js"></script>
   </head>
   <body>
     <h1>ALIEN</h1>
     <h3>status</h3>
     <p id="status">playing</p>
-
+    <input type="range" id="pitch" name="pitch" min="0" max="1000">
     <input type="button" name="name" value="DONE" onclick="done();">
     <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
-    <script src="alien.js" charset="utf-8"></script>
+    <script src="../js/alien-renderer.js" charset="utf-8"></script>
+    <!--<script src="alien.js" charset="utf-8"></script>-->
   </body>
 </html>

@@ -1,4 +1,4 @@
-
+"use strict";
 const REFRESH_RATE_MS = 60;
 const RECORDING_DURATION = 3000; //3 seconds
 const BOX_SIDE_SIZE = 500;
@@ -12,13 +12,13 @@ $(document).ready(function() {
 
     var time = 0;
     //Create the renderer
-    renderer = PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
+    window.renderer = PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
 
     //Add the canvas to the HTML document
     document.body.appendChild(renderer.view);
 
     //Create a container object called the `stage`
-    stage = new PIXI.Container();
+    window.stage = new PIXI.Container();
 
     //Tell the `renderer` to `render` the `stage`
     
