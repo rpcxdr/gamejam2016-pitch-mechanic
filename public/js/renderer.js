@@ -54,18 +54,31 @@ $(document).ready(function() {
 
 });
 
+var currentLevel;
+
+function loadLevel(level) {
+  if(currentLevel) {
+    stage.removeChild(currentLevel);
+  }
+  if(line) line.clear();
+  console.log(PIXI.loader.resources, 'level' + level);
+  var level = new PIXI.Sprite(
+    PIXI.loader.resources['level' + level].texture
+  );
+  currentLevel = level;
+  stage.addChild(level);
+  renderer.render(stage);
+}
+
+var line;
+
 //This `setup` function will run when the image has loaded
 function setup() {
 
-  //Create the `cat` sprite from the texture
-  var level = new PIXI.Sprite(
-    PIXI.loader.resources.level1.texture
-  );
+  loadLevel(1);
 
-  console.log(PIXI.loader.resources);
-
-  //Add the cat to the stage
-  stage.addChild(level);
+  line = new PIXI.Graphics();
+  stage.addChild(line);
 
   renderer.backgroundColor = 0xffffff;
 
@@ -91,15 +104,14 @@ function lineDistance( point1, point2 )
   return Math.sqrt( xs + ys );
 }
 
+
 var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastPitch, lastTime, pitch, time);
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        var line = new PIXI.Graphics();
         line.lineStyle(4, 0x999999, 1);
         if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
           line.moveTo(lastTime, lastPitch);
           line.lineTo(time, pitch);
-          stage.addChild(line);
         }
         renderer.render(stage);
     }

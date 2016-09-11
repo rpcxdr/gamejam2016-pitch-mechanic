@@ -20,10 +20,8 @@ const statusField = document.getElementById('status');
 */
 document.getElementById('start').addEventListener('click', function(e) {
     e.preventDefault();
-    console.log('test');
     const gameState = {
       round: 0,
-      player: 'human'
     };
     stateRecord.set('state', gameState);
 });
@@ -59,6 +57,9 @@ function play() {
     }
     console.log("isPlaying "+isPlaying);
 }
+
+window.play = play;
+
 var pitches;
 
 var stories = ['story zero', 'story 1'];
@@ -75,20 +76,20 @@ stateRecord.subscribe('state', function(gameState) {
   }
 });
 
-document.getElementById('finishedGame').addEventListener('click', function(e) {  
+document.getElementById('finishedGame').addEventListener('click', function(e) {
+
+  console.log("derpnado");
   var gameState = stateRecord.get('state');
   gameState.player='human';
   gameState.round++;
   loadPixelsFromUrl("/levels/L" + gameState.round + "goal.png", "scoring-canvas", function(pixels) {
     var drawnPixels = loadPixelsFromPitchData(sd.exportPitches());
-    //var drawnPixels = loadPixelsFromCanvas("play-canvas");
-    //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
-    gameState.score += score;  
-    //stateRecord.set('state', gameState);
+    gameState.score += score;
+    stateRecord.set('state', gameState);
   });
-  
-  
+
+
 });
 
 function loadPixelsFromCanvas(targetCanvasName) {
@@ -145,7 +146,7 @@ function getCanvasContext(targetCanvasName) {
           }
           var context = targetElement.getContext('2d');
           return context;
-      }  
+      }
 }
 
 function getScore(drawnPixels, goalPixels) {
@@ -185,7 +186,7 @@ function getScore(drawnPixels, goalPixels) {
             if(isScored && !goal){
                 isScored = false;
             }
-            
+
             var r=(drawn && !goal)?255:0;
             var g=(drawn && goal)?255:0;;
             var b=0;
@@ -203,14 +204,8 @@ function getScore(drawnPixels, goalPixels) {
             scoreMax++;
             scoreTotal++;
         }
-        //console.log("yo!", drawnCountInColumn);
     }
-    //scoreTotal /= 2;
     console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
-        /*
-    });
-});
-  */
 }
 
 
@@ -274,4 +269,3 @@ function done() {
   statusField.innerHTML = 'ready ' + round;
 }
 */
-

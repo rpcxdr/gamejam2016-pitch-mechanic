@@ -8,6 +8,8 @@ const PITCH_FACTOR = BOX_SIDE_SIZE / MAX_PITCH;
 const TIME_FACTOR = BOX_SIDE_SIZE / RECORDING_DURATION;
 const TWEAK_FACTOR = 0.5;
 
+var line;
+
 $(document).ready(function() {
 
     var time = 0;
@@ -23,6 +25,10 @@ $(document).ready(function() {
     window.stage = new PIXI.Container();
     window.sd = new SliderDrawer(RECORDING_DURATION, BOX_SIDE_SIZE, TIME_FACTOR, PITCH_FACTOR, REFRESH_RATE_MS, handlePitch)
 
+    line = new PIXI.Graphics();
+    stage.addChild(line);
+
+
     $("#pitch").mousedown(function () {
         sd.record();
     });
@@ -33,6 +39,7 @@ $(document).ready(function() {
 
     $("body").keypress(function(){
         sd.start();
+        play();
     });
 
     playbackT.play();
@@ -43,14 +50,17 @@ $(document).ready(function() {
     }, REFRESH_RATE_MS);
 });
 
+function clearStage() {
+  line.clear();
+  renderer.render(stage);
+}
+
 var handlePitch = function(lastTime, lastPitch, time, pitch){
-    console.log("hello?", lastTime, lastPitch, time, pitch);
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        var line = new PIXI.Graphics();
+        line = new PIXI.Graphics();
         line.lineStyle(6, 0xFFFFFF, 1);
         line.moveTo(lastTime, lastPitch);
         line.lineTo(time, pitch);
-        stage.addChild(line);
         renderer.render(stage);
     }
 }
@@ -101,7 +111,7 @@ class SliderDrawer {
     const self = this;
     var interval = setInterval(function() {
         if(self.isRunning){
-            
+
             self.pitchArr.push(self.getPitch() * self.pitchFactor);
             self.handler(
                 self.currentTime * self.timeFactor,
