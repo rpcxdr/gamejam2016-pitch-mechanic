@@ -1,19 +1,34 @@
+<!DOCTYPE html>
 <html>
-<head>
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
-  <script src="timbre.js"></script>
-  <script src="index.js"></script>
-  <title>
-    Pitch perfect
-  </title>
-<head>
-<body>
-  Hello Derp!
-  <input type="range" id="pitch" min="350" max="900" oninput="setPitch()" style="width:600">
-  <input type="button" id="play" onclick="play()" value="Play!">
-  <input type="button" id="record" onclick="recordPitches()" value="Record!">
-  <script src="js/pitch-detect.js"></script>
-  <script src="js/renderer.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Choose a Room</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" rel="stylesheet" />
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="container" style="padding-top: 100px;">
+      <div class="row">
+        <div class="four columns offset-by-four">
+          <h2>Choose a room</h2>
+          <input id="roomName" class="u-full-width" type="text" name="name" placeholder="Room Name">
+          <select class="u-full-width" id="role" name="">
+            <option value="human">Human</option>
+            <option value="alien">Alien</option>
+          </select>
+          <input id="submit" type="submit" class="u-full-width button button-primary" name="name" placeholder="Room Name">
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script>
+      $('#submit').click(function() {
+        var roomName = $('#roomName').val();
+        var role = $('#role').val();
+        window.location.href = '/' + role + '/?room=' + roomName;
+      });
+    </script>
+  </body>
 </html>

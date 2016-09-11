@@ -1,0 +1,19 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
+  <script src="timbre.js"></script>
+  <script src="index.js"></script>
+  <title>
+    Pitch perfect
+  </title>
+<head>
+<body>
+  Hello Derp!
+  <input type="range" id="pitch" min="350" max="900" oninput="setPitch()" style="width:600">
+  <input type="button" id="play" onclick="play()" value="Play!">
+  <input type="button" id="record" onclick="recordPitches()" value="Record!">
+  <script src="js/pitch-detect.js"></script>
+  <script src="js/renderer.js"></script>
+</body>
+</html>
