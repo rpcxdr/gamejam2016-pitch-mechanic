@@ -182,21 +182,23 @@ function getScore(drawnPixels, goalPixels) {
         for (var y=0; y<h; y++) {
             //console.log(x,y);
             var drawn = drawnPixels[x][y];
-            var goal = (!goalPixels[x][y][0] && !goalPixels[x][y][3]);
+            var goal = goalPixels[x][y][3];
             if (drawn) {
                 drawnCountInColumn++;
-                console.log("there's a pixel drawn at:", x , y);
+                //console.log("there's a pixel drawn at:", x , y);
                 drawnInColumn = true;
                 if(goal){
                     scoreTotal++;
                 }
             }
             if(!isScored && goal){
+                console.log("score line starting at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = true;
                 scoreMax++;
                 goalInColumn = true;
             }
             if(isScored && !goal){
+                console.log("score line ending at", x, y, goalPixels[x][y][0], goalPixels[x][y][3]);
                 isScored = false;
             }
 

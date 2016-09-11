@@ -140,6 +140,7 @@ class SliderDrawer {
   }
 
   exportPitches(){
+      console.log("wubalubadubdub", this.pitchArr.length, this.pitchArr);
       return this.pitchArr;
   }
 
