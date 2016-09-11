@@ -1,37 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>HUMAN</title>
-    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
-    <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
-  </head>
-  <body>
-    <div class="header">
-      <h1>A Tack On Tie Tan</h1>
-      <h2>Human Edition</h2>
-    </div>
+<head>
+  <meta charset="utf-8">
+  <title>HUMAN</title>
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="header">
+    <h1>A Tack On Tie Tan</h1>
+    <h2>Human Edition</h2>
+  </div>
 
-    <div style="display: none;" id="story">
+  <div style="display: none;" class="row" id="story">
+    <div class="whole column">
       this is some story
     </div>
+  </div>
 
-    <a class="button" id="finishedGame" href="javascript:;">Finished</a>
-    <a class="button" id="startRecording" href="javascript:;">Start Recording</a>
-
-    <div id="play-field"></div>
-
-    <div class="how-to-play">
-      <h4>How to play</h4>
-      <p>1. Press play and get ready</p>
-      <p>2. Use your voice pitch to trace the path on the screen</p>
+  <div id="game">
+    <div class="row">
+      <div class="one-half column">
+        <div class="row">
+          <h2> Round Score </h2>
+        </div>
+        <div class="row">
+          <h3 id="round_score">0</h3>
+        </div>
+      </div>
+      <div class="one-half column">
+        <div class="row">
+          <h2> Total Score </h2>
+        </div>
+        <div class="row">
+          <h3 id="total_score">0</h3>
+        </div>
+      </div>
     </div>
+    <!--    <input type="button" name="name" value="DONE" onclick="done();"> -->
+    <div class="row">
+      <a class="button" id="finishedGame" href="javascript:;">Finished</a>
+    </div>
+    <div class="row">
+      <a class="button" id="startRecording" href="javascript:;">Start Recording</a>
+    </div>
+    <div class="row">
+      <div id="play-field"></div>
+    </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
-    <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
-    <script src="/js/pitch-detect.js"></script>
-    <script src="/js/renderer.js"></script>
-    <script src="human.js" charset="utf-8"></script>
-  </body>
+  <div class="row how-to-play">
+    <h4>How to play</h4>
+    <p>1. Press play and get ready</p>
+    <p>2. Use your voice pitch to trace the path on the screen</p>
+    <p>3. When you're done, press finish</p>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
+  <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
+  <script src="/js/pitch-detect.js"></script>
+  <script src="/js/renderer.js"></script>
+  <script src="human.js" charset="utf-8"></script>
+</body>
 </html>

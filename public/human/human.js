@@ -68,15 +68,14 @@ stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
   if (gameState.player === 'alien') {
     //show the story
-    hideElement('finishedGame');
-    hideElement('startRecording');
-    hideElement('play-field');
+    hideElement('game');
     showElement('story');
   } else {
-    showElement('finishedGame');
-    showElement('startRecording');
-    showElement('play-field');
+    showElement('game');
     hideElement('story');
+    // show game[gameState.round]
+    $("#total_score").html((gameState.score ? gameState.score : 0));
+    $("#round_score").html((gameState.latestRoundScore ? gameState.latestRoundScore : 0));
     loadLevel(gameState.round + 1);
   }
 });

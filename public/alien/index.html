@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
     <script src="/timbre.js"></script>
     <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" rel="stylesheet" />
   </head>
   <body>
     <div class="header">
@@ -18,12 +19,49 @@
       this is some story
     </div>
 
-    <canvas id="play-canvas"></canvas>
-    <a style="display: none;" class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
-    <input style="display: none;" type="range" id="pitch" name="pitch" min="0" max="1000">
-    <a style="display: none;" class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
-    <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
-    <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
+    <div style="display: none;" id="game">
+      <div class="row">
+        <div class="one-half column">
+          <div class="row">
+            <h2> Round Score </h2>
+          </div>
+          <div class="row">
+            <h3 id="round_score">0</h3>
+          </div>
+        </div>
+        <div class="one-half column">
+          <div class="row">
+            <h2> Total Score </h2>
+          </div>
+          <div class="row">
+            <h3 id="total_score">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <a class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
+      </div>
+      <div class="row">
+        <a class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
+      </div>
+      <div class="row">
+        <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
+        <a class="button" id="start" value="Start" href="javascript:;">Start</a>
+        <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
+      </div>
+      <div class="row">
+        <input type="range" id="pitch" name="pitch" min="0" max="1000">
+        <div id="play-canvas"></div>
+      </div>
+    </div>
+
+    <div class="row how-to-play">
+      <h4>How to play</h4>
+      <p>1. Press play to listen to human's sound</p>
+      <p>2. When you're ready, press spacebar and use slider to mimic the sound</p>
+      <p>3. When you're done, press finish</p>
+    </div>
+
     <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
     <script src="../js/alien-renderer.js" charset="utf-8"></script>
     <script src="alien.js" charset="utf-8"></script>

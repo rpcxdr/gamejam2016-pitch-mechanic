@@ -53,7 +53,7 @@ input[type=range] {
   width: 500px;
   padding: 0.5rem 0;
   position: absolute;
-  transform: rotateZ(-90deg) translate(-300px, 240px);
+  transform: rotateZ(-90deg) translate(-245px, -540px);
 }
 
 

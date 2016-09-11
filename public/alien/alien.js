@@ -62,17 +62,10 @@ stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
   if (gameState.player === 'alien') {
     pitches = gameState.pitches;
-    showElement('play-canvas');
-    showElement('finishedGame');
-    showElement('play');
-    showElement('pitch');
+    showElement('game');
     hideElement('story');
   } else {
-    hideElement('play-canvas');
-    hideElement('finishedGame');
-    hideElement('play');
-    hideElement('pitch');
-    //TODO set the story
+    hideElement('game');
     showElement('story');
     clearStage();
   }
@@ -89,7 +82,12 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
     //var drawnPixels = loadPixelsFromCanvas("play-canvas");
     //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
+    console.log(score);
+    if(!gameState.score) gameState.score = 0;
     gameState.score += score;
+    gameState.latestRoundScore = score;
+    $("#total_score").html(gameState.score);
+    $("#round_score").html(score);
     stateRecord.set('state', gameState);
   });
 
@@ -210,6 +208,7 @@ function getScore(drawnPixels, goalPixels) {
         }
     }
     console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
+    return (scoreTotal/scoreMax)*100;
 }
 
 
