@@ -1,10 +1,5 @@
 <html>
 <head>
-            <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
-
-        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-        <script src="timbre.js"></script>
-        <script src="index.js"></script>
     <title>
         Pitch perfect
     </title>
@@ -13,5 +8,16 @@
 Alien recieve and play pitches!
         <input type="range" id="pitch" min="350" max="900" oninput="setPitch()" style="width:600">
         <input type="button" id="play" onclick="play()" value="Play!">
+        <br />
+        <canvas id="goal"></canvas>
+        <br />
+        <canvas id="drawn"></canvas>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.1/pixi.min.js"></script>
+              <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="timbre.js"></script>
+        <script src="index.js"></script>
 </body>
 </html>
