@@ -14,42 +14,56 @@
       <h1>A Tack On Tie Tan</h1>
       <h2>Alien Edition</h2>
     </div>
-    <p id="story"></p>
-    <div class="row">
-      <div class="one-half column"> 
-        <div class="row">
-          <h2> Round Score </h2>
+
+    <div id="story">
+      this is some story
+    </div>
+
+    <div style="display: none;" id="game">
+      <div class="row">
+        <div class="one-half column">
+          <div class="row">
+            <h2> Round Score </h2>
+          </div>
+          <div class="row">
+            <h3 id="round_score">0</h3>
+          </div>
         </div>
-        <div class="row">
-          <h3 id="round_score">0</h3>
+        <div class="one-half column">
+          <div class="row">
+            <h2> Total Score </h2>
+          </div>
+          <div class="row">
+            <h3 id="total_score">0</h3>
+          </div>
         </div>
       </div>
-      <div class="one-half column"> 
-        <div class="row">
-          <h2> Total Score </h2>
-        </div>
-        <div class="row">
-          <h3 id="total_score">0</h3>
-        </div>
+      <div class="row">
+        <a class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
+      </div>
+      <div class="row">
+        <a class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
+      </div>
+      <div class="row">
+        <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
+        <a class="button" id="start" value="Start" href="javascript:;">Start</a>
+        <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
+      </div>
+      <div class="row">
+        <input type="range" id="pitch" name="pitch" min="0" max="1000">
+        <div id="play-canvas"></div>
       </div>
     </div>
-    <div class="row">
-      <a class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
+
+    <div class="row how-to-play">
+      <h4>How to play</h4>
+      <p>1. Press play to listen to human's sound</p>
+      <p>2. When you're ready, press spacebar and use slider to mimic the sound</p>
+      <p>3. When you're done, press finish</p>
     </div>
-    <div class="row">
-      <a class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
-    </div>
-    <div class="row">
-      <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
-      <a class="button" id="start" value="Start" href="javascript:;">Start</a>
-      <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
-    </div>
-    <div class="row">
-      <input type="range" id="pitch" name="pitch" min="0" max="1000">
-      <canvas id="play-canvas"></canvas>
-    </div>
-      <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
-      <script src="../js/alien-renderer.js" charset="utf-8"></script>
-      <script src="alien.js" charset="utf-8"></script>
+
+    <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
+    <script src="../js/alien-renderer.js" charset="utf-8"></script>
+    <script src="alien.js" charset="utf-8"></script>
   </body>
 </html>

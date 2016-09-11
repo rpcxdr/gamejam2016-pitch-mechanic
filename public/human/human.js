@@ -1,4 +1,11 @@
 "use strict";
+$(document).ready(function() {
+  const gameState = {
+    round: 0,
+    player: 'human'
+  };
+  stateRecord.set('state', gameState);
+})
 
 const client = deepstream('104.236.166.136:6020', {
     mergeStrategy: deepstream.MERGE_STRATEGIES.LOCAL_WINS
@@ -48,15 +55,25 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
   stateRecord.set('state', gameState);
 });
 
+
+function hideElement(id) {
+    document.getElementById(id).style.display = "none";
+}
+function showElement(id) {
+    document.getElementById(id).style.display = "block";
+}
+
 var stories = ['human story zero', 'human  story juan!'];
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
   if (gameState.player === 'alien') {
-    // show stories[gameState.round]
-    document.getElementById('story').innerText = stories[gameState.round];
+    //show the story
+    hideElement('game');
+    showElement('story');
   } else {
+    showElement('game');
+    hideElement('story');
     // show game[gameState.round]
-    document.getElementById('story').innerText = "GAME MODE ROUND "+gameState.round;
     $("#total_score").html((gameState.score ? gameState.score : 0));
     $("#round_score").html((gameState.latestRoundScore ? gameState.latestRoundScore : 0));
     loadLevel(gameState.round + 1);

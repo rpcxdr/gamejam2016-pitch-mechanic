@@ -13,10 +13,10 @@ var graphics;
 $(document).ready(function() {
     var time = 0;
     //Create the renderer
-    window.renderer = new PIXI.CanvasRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE, {view: document.getElementById('play-canvas')});
+    window.renderer = new PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
     window.renderer.backgroundColor = 0xFFFFFF;
     //Add the canvas to the HTML document
-    document.body.appendChild(renderer.view);
+    document.getElementById('play-canvas').appendChild(renderer.view);
 
     window.playbackT = T("sin");//.play();
 
