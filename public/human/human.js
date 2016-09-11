@@ -57,6 +57,6 @@ stateRecord.subscribe('state', function(gameState) {
   } else {
     // show game[gameState.round]
     document.getElementById('story').innerText = "GAME MODE ROUND "+gameState.round;
+    loadLevel(gameState.round + 1);
   }
 });
-

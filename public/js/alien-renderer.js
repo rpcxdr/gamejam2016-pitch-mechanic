@@ -8,6 +8,8 @@ const PITCH_FACTOR = BOX_SIDE_SIZE / MAX_PITCH;
 const TIME_FACTOR = BOX_SIDE_SIZE / RECORDING_DURATION;
 const TWEAK_FACTOR = 0.5;
 
+var graphics;
+
 $(document).ready(function() {
     var time = 0;
     //Create the renderer
@@ -23,6 +25,9 @@ $(document).ready(function() {
     renderer.render(stage);
     window.sd = new SliderDrawer(RECORDING_DURATION, BOX_SIDE_SIZE, TIME_FACTOR, PITCH_FACTOR, REFRESH_RATE_MS, handlePitch)
 
+    graphics = new PIXI.Graphics();
+    stage.addChild(graphics);
+
     $("#pitch").mousedown(function () {
         sd.record();
     });
@@ -33,6 +38,7 @@ $(document).ready(function() {
 
     $("body").keypress(function(){
         sd.start();
+        play();
     });
 
     playbackT.play();
@@ -43,33 +49,31 @@ $(document).ready(function() {
     }, REFRESH_RATE_MS);
 });
 
+function clearStage() {
+  graphics.clear();
+  renderer.render(stage);
+}
+window.clearStage = clearStage;
+
 
 var handlePitch = function(lastTime, lastPitch, time, pitch){
     console.log("hello?", lastTime, lastPitch, time, pitch);
-    var rectangle = new PIXI.Graphics();
-    rectangle.lineStyle(1, 0xFFFFFF, 1);
-    rectangle.beginFill(0xFFFFFF);
-    rectangle.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
-    rectangle.endFill();
-    renderer.render(stage);
-    stage.addChild(rectangle);
-    var circle = new PIXI.Graphics();
-    circle.beginFill(0x9966FF);
-    circle.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
-    circle.endFill();
-    stage.addChild(circle);
+    graphics.lineStyle(1, 0xFFFFFF, 1);
+    graphics.beginFill(0xFFFFFF);
+    graphics.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
+    graphics.endFill();
+
+    graphics.beginFill(0x9966FF);
+    graphics.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
+    graphics.endFill();
+
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        var line = new PIXI.Graphics();
-        line.lineStyle(6, 0x000000, 1);
-        line.moveTo(lastTime, lastPitch);
-        line.lineTo(time, pitch);
-        stage.addChild(line);
+        graphics.lineStyle(6, 0x000000, 1);
+        graphics.moveTo(lastTime, lastPitch);
+        graphics.lineTo(time, pitch);
     }
     renderer.render(stage);
 }
-
-
-
 
 class SliderDrawer {
   constructor(recordDuration, boxSide, timeFactor, pitchFactor, msDelay, handler) {

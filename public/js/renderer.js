@@ -29,13 +29,13 @@ $(document).ready(function() {
    // var texture = PIXI.utils.TextureCache["../levels/L2.png"];
     //window.level = new PIXI.Sprite(texture);
     /*
-    var line = new PIXI.Graphics();
-    line.lineStyle(4, 0xFFFFFF, 1);
-    line.moveTo(100, 100);
-    line.lineTo(80, 50);
-    //line.x = 32;
-    //line.y = 32;
-    stage.addChild(line);
+    var graphics = new PIXI.Graphics();
+    graphics.graphicsStyle(4, 0xFFFFFF, 1);
+    graphics.moveTo(100, 100);
+    graphics.graphicsTo(80, 50);
+    //graphics.x = 32;
+    //graphics.y = 32;
+    stage.addChild(graphics);
     renderer.render(stage);
     */
 
@@ -54,18 +54,31 @@ $(document).ready(function() {
 
 });
 
+var currentLevel;
+
+function loadLevel(level) {
+  if(currentLevel) {
+    stage.removeChild(currentLevel);
+  }
+  if(graphics) graphics.clear();
+  console.log(PIXI.loader.resources, 'level' + level);
+  var level = new PIXI.Sprite(
+    PIXI.loader.resources['level' + level].texture
+  );
+  currentLevel = level;
+  stage.addChild(level);
+  renderer.render(stage);
+}
+
+var graphics;
+
 //This `setup` function will run when the image has loaded
 function setup() {
 
-  //Create the `cat` sprite from the texture
-  var level = new PIXI.Sprite(
-    PIXI.loader.resources.level1.texture
-  );
+  loadLevel(1);
 
-  console.log(PIXI.loader.resources);
-
-  //Add the cat to the stage
-  stage.addChild(level);
+  graphics = new PIXI.Graphics();
+  stage.addChild(graphics);
 
   renderer.backgroundColor = 0xffffff;
 
@@ -91,27 +104,22 @@ function lineDistance( point1, point2 )
   return Math.sqrt( xs + ys );
 }
 
+
 var handlePitch = function(lastTime, lastPitch, time, pitch){
-    console.log("hello?", lastPitch, lastTime, pitch, time);
-    var rectangle = new PIXI.Graphics();
-    rectangle.lineStyle(1, 0xFFFFFF, 1);
-    rectangle.beginFill(0xFFFFFF);
-    rectangle.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
-    rectangle.endFill();
-    renderer.render(stage);
-    stage.addChild(rectangle);
-    var circle = new PIXI.Graphics();
-    circle.beginFill(0x9966FF);
-    circle.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
-    circle.endFill();
-    stage.addChild(circle);
+    graphics.lineStyle(1, 0xFFFFFF, 1);
+    graphics.beginFill(0xFFFFFF);
+    graphics.drawRect(0, BOX_SIDE_SIZE, BOX_SIDE_SIZE, -10);
+    graphics.endFill();
+
+    graphics.beginFill(0x9966FF);
+    graphics.drawCircle(time, BOX_SIDE_SIZE - 5, 5);
+    graphics.endFill();
+
     if(lastPitch !== BOX_SIDE_SIZE && pitch !== BOX_SIDE_SIZE && lastPitch > 0 && pitch > 0) {
-        var line = new PIXI.Graphics();
-        line.lineStyle(4, 0x999999, 1);
+        graphics.lineStyle(4, 0x999999, 1);
         if(lineDistance({x: lastTime, y: lastPitch}, {x: time, y: pitch}) < 150) {
-          line.moveTo(lastTime, lastPitch);
-          line.lineTo(time, pitch);
-          stage.addChild(line);
+          graphics.moveTo(lastTime, lastPitch);
+          graphics.lineTo(time, pitch);
         }
     }
     renderer.render(stage);
@@ -135,7 +143,6 @@ window.pd = null;
 function gotStream(stream) {
     //var pd = new PitchDetect(stream, RECORDING_DURATION, BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
     pd = new PitchDetect(stream, RECORDING_DURATION, TIME_FACTOR,/*BOX_SIDE_SIZE/Math.log10(MAX_PITCH-MIN_PITCH)*/BOX_SIDE_SIZE/(MAX_PITCH-MIN_PITCH), BOX_SIDE_SIZE, REFRESH_RATE_MS, handlePitch);
-    pd.start();
 }
 function startPdStream() {
     if (pd) {

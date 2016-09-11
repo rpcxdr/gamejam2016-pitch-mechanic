@@ -28,8 +28,6 @@ document.getElementById('start').addEventListener('click', function(e) {
     stateRecord.set('state', gameState);
 });
 
-
-
 setInterval(function () {
   var playbackCurrentTime = new Date().getTime();
   var timeSinceStart = playbackCurrentTime - playbackStartTime;
@@ -72,10 +70,13 @@ stateRecord.subscribe('state', function(gameState) {
   } else {
     // show stories[gameState.round]
     document.getElementById('story').innerText = stories[gameState.round];
+    clearStage();
   }
 });
 
-document.getElementById('finishedGame').addEventListener('click', function(e) {  
+document.getElementById('finishedGame').addEventListener('click', function(e) {
+
+  console.log("derpnado");
   var gameState = stateRecord.get('state');
   gameState.player='human';
   gameState.round++;
@@ -84,11 +85,11 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
     //var drawnPixels = loadPixelsFromCanvas("play-canvas");
     //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
-    gameState.score += score;  
-    //stateRecord.set('state', gameState);
+    gameState.score += score;
+    stateRecord.set('state', gameState);
   });
-  
-  
+
+
 });
 
 function loadPixelsFromCanvas(targetCanvasName) {
@@ -145,7 +146,7 @@ function getCanvasContext(targetCanvasName) {
           }
           var context = targetElement.getContext('2d');
           return context;
-      }  
+      }
 }
 
 function getScore(drawnPixels, goalPixels) {
@@ -185,7 +186,7 @@ function getScore(drawnPixels, goalPixels) {
             if(isScored && !goal){
                 isScored = false;
             }
-            
+
             var r=(drawn && !goal)?255:0;
             var g=(drawn && goal)?255:0;;
             var b=0;
@@ -203,14 +204,8 @@ function getScore(drawnPixels, goalPixels) {
             scoreMax++;
             scoreTotal++;
         }
-        //console.log("yo!", drawnCountInColumn);
     }
-    //scoreTotal /= 2;
     console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
-        /*
-    });
-});
-  */
 }
 
 
@@ -274,4 +269,3 @@ function done() {
   statusField.innerHTML = 'ready ' + round;
 }
 */
-
