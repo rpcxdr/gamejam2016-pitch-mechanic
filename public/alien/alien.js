@@ -18,15 +18,6 @@ const stateRecord = client.record.getRecord('room/1/state');
 /*
 const statusField = document.getElementById('status');
 */
-document.getElementById('start').addEventListener('click', function(e) {
-    e.preventDefault();
-    console.log('test');
-    const gameState = {
-      round: 0,
-      player: 'human'
-    };
-    stateRecord.set('state', gameState);
-});
 
 setInterval(function () {
   var playbackCurrentTime = new Date().getTime();
@@ -59,17 +50,30 @@ function play() {
 }
 var pitches;
 
+function hideElement(id) {
+    document.getElementById(id).style.display = "none";
+}
+function showElement(id) {
+    document.getElementById(id).style.display = "block";
+}
+
 var stories = ['story zero', 'story 1'];
 stateRecord.subscribe('state', function(gameState) {
   console.log(gameState);
   if (gameState.player === 'alien') {
-    // show game[gameState.round]
-    document.getElementById('story').innerText = "GAME MODE ROUND " + gameState.round;
-    console.log("pitcvhes",     gameState.pitches);
     pitches = gameState.pitches;
+    showElement('play-canvas');
+    showElement('finishedGame');
+    showElement('play');
+    showElement('pitch');
+    hideElement('story');
   } else {
-    // show stories[gameState.round]
-    document.getElementById('story').innerText = stories[gameState.round];
+    hideElement('play-canvas');
+    hideElement('finishedGame');
+    hideElement('play');
+    hideElement('pitch');
+    //TODO set the story
+    showElement('story');
     clearStage();
   }
 });

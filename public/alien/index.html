@@ -13,13 +13,16 @@
       <h1>A Tack On Tie Tan</h1>
       <h2>Alien Edition</h2>
     </div>
-    <p id="story"></p>
+
+    <div id="story">
+      this is some story
+    </div>
+
     <canvas id="play-canvas"></canvas>
-    <a class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
-    <input type="range" id="pitch" name="pitch" min="0" max="1000">
-    <a class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
+    <a style="display: none;" class="button" id="finishedGame" value="finishedGame" href="javascript:;">Finish</a>
+    <input style="display: none;" type="range" id="pitch" name="pitch" min="0" max="1000">
+    <a style="display: none;" class="button" id="play" onclick="play()" value="Play!" href="javascript:;">Play</a>
     <!--<a type="button" name="name" value="DONE" onclick="done();">Done</a>-->
-    <a class="button" id="start" value="Start" href="javascript:;">Start</a>
     <canvas id="scoring-canvas" style="position: absolute; transform: translate(-5000px, -5000px)" width="500" height="500"></canvas>
     <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
     <script src="../js/alien-renderer.js" charset="utf-8"></script>
