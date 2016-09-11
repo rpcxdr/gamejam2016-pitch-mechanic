@@ -5,6 +5,7 @@
     <title>HUMAN</title>
     <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
     <link rel="stylesheet" href="/css/general.css" media="screen" title="no title">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" rel="stylesheet" />
   </head>
   <body>
     <div class="header">
@@ -12,13 +13,35 @@
       <h2>Human Edition</h2>
     </div>
     <p id="story"></p>
+    <div class="row">
+      <div class="one-half column"> 
+        <div class="row">
+          <h2> Round Score </h2>
+        </div>
+        <div class="row">
+          <h3 id="round_score">0</h3>
+        </div>
+      </div>
+      <div class="one-half column"> 
+        <div class="row">
+          <h2> Total Score </h2>
+        </div>
+        <div class="row">
+          <h3 id="total_score">0</h3>
+        </div>
+      </div>
+    </div>
 <!--    <input type="button" name="name" value="DONE" onclick="done();"> -->
-
-    <a class="button" id="finishedGame" href="javascript:;">Finished</a>
-    <div id="play-field"></div>
-    <a class="button" id="startRecording" href="javascript:;">Start!</a>
-
-    <div class="how-to-play">
+    <div class="row">
+      <a class="button" id="finishedGame" href="javascript:;">Finished</a>
+    </div>
+    <div class="row">
+      <a class="button" id="startRecording" href="javascript:;">Start!</a>
+    </div>
+    <div class="row">
+      <div id="play-field"></div>
+    <div class="row">
+    <div class="row how-to-play">
       <h4>How to play</h4>
       <p>1. Press play and get ready</p>
       <p>2. Use your voice pitch to trace the path on the screen</p>

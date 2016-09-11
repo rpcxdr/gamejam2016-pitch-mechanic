@@ -86,6 +86,9 @@ document.getElementById('finishedGame').addEventListener('click', function(e) {
     //console.log(drawnPixels);
     var score = getScore(drawnPixels, pixels);
     gameState.score += score;
+    gameState.latestRoundScore = score;
+    $("#total_score").html(gameState.score);
+    $("#round_score").html(score);
     stateRecord.set('state', gameState);
   });
 

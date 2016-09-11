@@ -57,6 +57,8 @@ stateRecord.subscribe('state', function(gameState) {
   } else {
     // show game[gameState.round]
     document.getElementById('story').innerText = "GAME MODE ROUND "+gameState.round;
+    $("#total_score").html((gameState.score ? gameState.score : 0));
+    $("#round_score").html((gameState.latestRoundScore ? gameState.latestRoundScore : 0));
     loadLevel(gameState.round + 1);
   }
 });
