@@ -12,7 +12,7 @@ $(document).ready(function() {
 
     var time = 0;
     //Create the renderer
-    window.renderer = PIXI.autoDetectRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE);
+    window.renderer = new PIXI.CanvasRenderer(BOX_SIDE_SIZE, BOX_SIDE_SIZE, {view: document.getElementById('play-canvas')});
 
     //Add the canvas to the HTML document
     document.body.appendChild(renderer.view);

@@ -92,7 +92,7 @@ loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
             for (var y=0; y<h; y++) {
                 //console.log(x,y);
                 var drawn = drawnPixels[x][y][0];
-                var goal = goalPixels[x][y][0];
+                var goal = !goalPixels[x][y][0];
                 if (drawn) {
                     drawnInColumn = true;
                     if(goal){
