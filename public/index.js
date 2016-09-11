@@ -24,7 +24,7 @@ setInterval(function () {
     var t = new Date().getTime();
     var epocFrame = Math.floor(t/msPerFrame);
     var frameIndex = epocFrame % pitchFrames.length;
-    console.log("playing index: "+frameIndex );
+    //console.log("playing index: "+frameIndex );
     if (isRecording) {
         var pitch = $("#pitch").val();
         pitchFrames[frameIndex] = pitch;
@@ -76,9 +76,9 @@ record.subscribe("humanPitches", function (foo) {
 });
 
 loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
-    console.log("loadCanvas.onload sfssss got: ",drawnPixels);
+    //console.log("loadCanvas.onload sfssss got: ",drawnPixels);
     loadPixels("test-goal-drawing.png", "drawn",function (goalPixels) {
-        console.log("loadCanvas.onload sfssss2 got: ",goalPixels);
+        //console.log("loadCanvas.onload sfssss2 got: ",goalPixels);
         var h = 200;
         var w = 200;
         var p2d = new Array(w);
@@ -86,15 +86,28 @@ loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
         var scoreTotal = 0;
         for (var x=0; x<w; x++) {
             p2d[x] = new Array(h);
+            var goalInColumn = false;
+            var drawnInColumn = false;
+            var isScored = false;
             for (var y=0; y<h; y++) {
+                //console.log(x,y);
                 var drawn = drawnPixels[x][y][0];
                 var goal = goalPixels[x][y][0];
                 if (drawn) {
-                    scoreMax++;
-                    if (goal) {
+                    drawnInColumn = true;
+                    if(goal){
                         scoreTotal++;
                     }
                }
+               if(!isScored && goal){
+                   isScored = true;
+                   scoreMax++;
+                   goalInColumn = true;
+               }
+               if(isScored && !goal){
+                   isScored = false;
+               }
+               
                var r=(drawn && !goal)?255:0;
                var g=(drawn && goal)?255:0;;
                var b=0;
@@ -103,6 +116,13 @@ loadPixels("test-alien-drawing.png", "goal", function (drawnPixels) {
                visualScoreContext.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
                visualScoreContext.fillRect( x, y, 1, 1 );
 
+            }
+            if(!goalInColumn && drawnInColumn){
+                   scoreMax++;
+               }
+            if(!goalInColumn && !drawnInColumn){
+                scoreMax++;
+                scoreTotal++;
             }
         }
         console.log("You scored "+scoreTotal+"/"+scoreMax+": %"+(scoreTotal/scoreMax)*100 )
