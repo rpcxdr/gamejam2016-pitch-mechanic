@@ -9,12 +9,14 @@
   </head>
   <body>
     <h1>ALIEN</h1>
-    <h3>status</h3>
-    <p id="status">playing</p>
+    <div id="story"></div>
+    <input type="button" id="finishedGame" value="finishedGame" />
     <input type="range" id="pitch" name="pitch" min="0" max="1000">
+    <input type="button" id="play" onclick="play()" value="Play!">
     <input type="button" name="name" value="DONE" onclick="done();">
+    <input type="button" id="start" value="Start">
     <script src="https://cdn.rawgit.com/deepstreamIO/deepstream.io-client-js/master/dist/deepstream.min.js"></script>
     <script src="../js/alien-renderer.js" charset="utf-8"></script>
-    <!--<script src="alien.js" charset="utf-8"></script>-->
+    <script src="alien.js" charset="utf-8"></script>
   </body>
 </html>
